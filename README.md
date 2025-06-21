@@ -1,14 +1,14 @@
-# mcpclient: The Missing Connector for AI
+# mcpconn: The Missing Connector for AI
 
-**mcpclient** is a Python library that provides a simple and efficient way to connect your applications to AI models using the Multi-purpose Cooperative Protocol (MCP). It acts as a wrapper around the `mcp` library, offering a streamlined client interface for seamless integration with various AI providers and transport protocols.
+**mcpconn** is a Python library that provides a simple and efficient way to connect your applications to AI models using the Multi-purpose Cooperative Protocol (MCP). It acts as a wrapper around the `mcp` library, offering a streamlined client interface for seamless integration with various AI providers and transport protocols.
 
-[![PyPI version](https://badge.fury.io/py/mcpclient.svg)](https://badge.fury.io/py/mcpclient)
+[![PyPI version](https://badge.fury.io/py/mcpconn.svg)](https://badge.fury.io/py/mcpconn)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Documentation](https://img.shields.io/badge/Documentation-blue.svg)](https://2796gaurav.github.io/mcpclient)
+[![Documentation](https://img.shields.io/badge/Documentation-blue.svg)](https://2796gaurav.github.io/mcpconn)
 
 ## Table of Contents
 
-- [mcpclient: The Missing Connector for AI](#mcpclient-the-missing-connector-for-ai)
+- [mcpconn: The Missing Connector for AI](#mcpconn-the-missing-connector-for-ai)
   - [✨ Features](#-features)
   - [🚀 Getting Started](#-getting-started)
     - [Installation](#installation)
@@ -39,16 +39,16 @@
 ### Installation
 
 ```bash
-pip install mcpclient
+pip install mcpconn
 ```
 
 ### Quick Start
 
-Here's a simple example of how to use `mcpclient` to connect to an MCP server and interact with an AI model:
+Here's a simple example of how to use `mcpconn` to connect to an MCP server and interact with an AI model:
 
 ```python
 import asyncio
-from mclpclient import MCPClient
+from mcpconn import MCPClient
 
 async def main():
     # Connect to a local server using STDIO
@@ -72,7 +72,7 @@ if __name__ == "__main__":
 
 ## 📚 Documentation
 
-For full details on all features and the complete API reference, please visit our **[documentation site](https://2796gaurav.github.io/mcpclient)**.
+For full details on all features and the complete API reference, please visit our **[documentation site](https://2796gaurav.github.io/mcpconn)**.
 
 The documentation is automatically generated from the `main` branch and includes:
 
@@ -89,7 +89,7 @@ The documentation is automatically generated from the `main` branch and includes
 
 ## 🤝 Contributing 
 
-Contributions are welcome! If you'd like to contribute to `mcpclient`, please follow these steps:
+Contributions are welcome! If you'd like to contribute to `mcpconn`, please follow these steps:
 
 1.  Fork the repository.
 2.  Create a new branch for your feature or bug fix.
@@ -99,7 +99,7 @@ Contributions are welcome! If you'd like to contribute to `mcpclient`, please fo
 
 ## 📄 License
 
-`mcpclient` is licensed under the [MIT License](LICENSE).
+`mcpconn` is licensed under the [MIT License](LICENSE).
 
 ## ⚠️ Disclaimer
 
@@ -115,15 +115,15 @@ If you discover a security vulnerability, please report it to us by emailing [27
 
 ## 🌟 Showcase
 
-Have you built something cool with `mcpclient`? Written an article or created a video? We'd love to see it! Please open a pull request to add your project to this list.
+Have you built something cool with `mcpconn`? Written an article or created a video? We'd love to see it! Please open a pull request to add your project to this list.
 
 ## 💬 Support
 
-If you have questions or need help, please open an issue in the [issue tracker](https://github.com/2796gaurav/mcpclient/issues).
+If you have questions or need help, please open an issue in the [issue tracker](https://github.com/2796gaurav/mcpconn/issues).
 
 ## 🐍 Supported Python Versions
 
-`mcpclient` is tested and supported on the following Python versions:
+`mcpconn` is tested and supported on the following Python versions:
 
 - Python 3.8
 - Python 3.9
