@@ -87,7 +87,7 @@ The documentation is automatically generated from the `main` branch and includes
 - [ ] Add more examples and tutorials.
 - [ ] Improve documentation and type hinting.
 
-## 🤝 Contributing
+## 🤝 Contributing 
 
 Contributions are welcome! If you'd like to contribute to `plug_mcp`, please follow these steps:
 
