@@ -20,7 +20,7 @@ from .guardrails import (
 logger = logging.getLogger(__name__)
 
 
-class MCPClient:
+class mcpconn:
     """Simplified MCP client."""
 
     def __init__(

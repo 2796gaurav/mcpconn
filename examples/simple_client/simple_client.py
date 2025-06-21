@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Simple MCP Client - Basic usage of mcpclient package
+Simple MCP Client - Basic usage of mcpconn package
 
-Shows how to use mclpclient.MCPClient for all protocols and LLMs.
+Shows how to use mclpclient.mcpconn for all protocols and LLMs.
 """
 
 import asyncio
@@ -10,16 +10,16 @@ import argparse
 import sys
 import os
 
-# Add parent directory to path to import mcpclient
+# Add parent directory to path to import mcpconn
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from mcpclient import MCPClient
+from mcpconn import mcpconn
 
 
 async def main():
     """Simple MCP client example."""
     parser = argparse.ArgumentParser(
-        description="Simple MCP Client using mcpclient package"
+        description="Simple MCP Client using mcpconn package"
     )
     parser.add_argument("server", help="Server path (stdio) or URL (HTTP)")
     parser.add_argument("--provider", choices=["anthropic", "openai"], default="openai")
@@ -29,7 +29,7 @@ async def main():
     args = parser.parse_args()
 
     # Create client
-    client = MCPClient(
+    client = mcpconn(
         llm_provider=args.provider, model=args.model, timeout=30.0, ssl_verify=False
     )
 

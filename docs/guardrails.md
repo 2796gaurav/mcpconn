@@ -1,10 +1,10 @@
 # Using Guardrails
 
-`mcpclient` comes with a powerful, built-in guardrail system to help you secure your application and moderate content. Guardrails can inspect both user input before it's sent to the AI and the AI's response before it's sent to the user.
+`mcpconn` comes with a powerful, built-in guardrail system to help you secure your application and moderate content. Guardrails can inspect both user input before it's sent to the AI and the AI's response before it's sent to the user.
 
 ## How it Works
 
-The `MCPClient` has a `GuardrailManager` that can hold multiple guardrails. You can add any of the built-in guardrails or even create your own.
+The `mcpconn` has a `GuardrailManager` that can hold multiple guardrails. You can add any of the built-in guardrails or even create your own.
 
 When you call `client.query()`, the following happens:
 1. The user's message is checked against all registered guardrails.
@@ -18,11 +18,11 @@ Here is a complete example of how to add and use multiple guardrails.
 
 ```python
 import asyncio
-from mclpclient import MCPClient
-from mcpclient.guardrails import PIIGuardrail, WordMaskGuardrail, InjectionGuardrail
+from mclpclient import mcpconn
+from mcpconn.guardrails import PIIGuardrail, WordMaskGuardrail, InjectionGuardrail
 
 async def main():
-    client = MCPClient(llm_provider="openai")
+    client = mcpconn(llm_provider="openai")
     
     # Add a guardrail to detect and mask PII
     client.add_guardrail(PIIGuardrail(name="pii_detector"))

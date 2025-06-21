@@ -1,6 +1,6 @@
 # Simple MCP Client
 
-Basic example showing how to use the `mcpclient` package as an MCP client.
+Basic example showing how to use the `mcpconn` package as an MCP client.
 
 ## Quick Start
 
@@ -148,13 +148,13 @@ Options:
 
 ## How It Works
 
-The client uses the `mclpclient.MCPClient` class:
+The client uses the `mclpclient.mcpconn` class:
 
 ```python
-from mclpclient import MCPClient
+from mclpclient import mcpconn
 
 # Create client
-client = MCPClient(
+client = mcpconn(
     llm_provider="anthropic",  # or "openai"
     model="claude-3-5-sonnet-20241022",  # optional
     timeout=30.0,
@@ -174,7 +174,7 @@ await client.disconnect()
 ### With Conversation Management
 ```python
 # Create client with conversation support
-client = MCPClient(
+client = mcpconn(
     llm_provider="anthropic",
     conversation_id="my-conversation",  # optional
     auto_generate_ids=True,  # generate unique IDs for each message
@@ -194,10 +194,10 @@ history = client.get_conversation_history()
 
 ### With Guardrails
 ```python
-from mcpclient.guardrails import WordMaskGuardrail, PIIGuardrail
+from mcpconn.guardrails import WordMaskGuardrail, PIIGuardrail
 
 # Create client
-client = MCPClient(llm_provider="anthropic", ssl_verify=False)
+client = mcpconn(llm_provider="anthropic", ssl_verify=False)
 
 # Add guardrails
 word_guardrail = WordMaskGuardrail(

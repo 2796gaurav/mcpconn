@@ -1,12 +1,12 @@
-# mcpclient: The Missing Connector for AI – Deep Dive, Use Cases, and Tutorial
+# mcpconn: The Missing Connector for AI – Deep Dive, Use Cases, and Tutorial
 
 ## Introduction
 
-**mcpclient** is a Python library that makes it easy to connect your applications to AI models using the Multi-purpose Cooperative Protocol (MCP). It wraps the lower-level `mcp` library, providing a simple, unified, and secure interface for working with multiple AI providers (like OpenAI and Anthropic) and different connection methods (STDIO, SSE, HTTP).
+**mcpconn** is a Python library that makes it easy to connect your applications to AI models using the Multi-purpose Cooperative Protocol (MCP). It wraps the lower-level `mcp` library, providing a simple, unified, and secure interface for working with multiple AI providers (like OpenAI and Anthropic) and different connection methods (STDIO, SSE, HTTP).
 
 This guide will:
 - Explain the problems with traditional MCP clients
-- Show how mcpclient solves them
+- Show how mcpconn solves them
 - Provide detailed examples and use cases
 - Help you get started and extend the library for your needs
 
@@ -34,7 +34,7 @@ This guide will:
 
 ---
 
-## The Solution: How mcpclient Helps
+## The Solution: How mcpconn Helps
 
 - **Unified Client**: One interface for all providers and transports.
 - **Built-in Guardrails**: Automatic content filtering, PII masking, and injection detection.
@@ -47,7 +47,7 @@ This guide will:
 ## Installation
 
 ```bash
-pip install mcpclient
+pip install mcpconn
 ```
 
 ---
@@ -58,11 +58,11 @@ Connect to an Anthropic-powered local server and chat with an AI model:
 
 ```python
 import asyncio
-from mclpclient import MCPClient
+from mclpclient import mcpconn
 
 async def main():
     # Connect to a local server using STDIO
-    client = MCPClient(llm_provider="anthropic")
+    client = mcpconn(llm_provider="anthropic")
     await client.connect("python examples/simple_server/main.py")
 
     # Start a conversation
@@ -89,10 +89,10 @@ if __name__ == "__main__":
 
 **Solution:**
 ```python
-client = MCPClient(llm_provider="openai", api_key="YOUR_OPENAI_KEY")
+client = mcpconn(llm_provider="openai", api_key="YOUR_OPENAI_KEY")
 await client.connect("https://api.openai.com/v1", transport="http")
 # ...
-client = MCPClient(llm_provider="anthropic", api_key="YOUR_ANTHROPIC_KEY")
+client = mcpconn(llm_provider="anthropic", api_key="YOUR_ANTHROPIC_KEY")
 await client.connect("https://api.anthropic.com/v1", transport="http")
 ```
 
@@ -101,9 +101,9 @@ await client.connect("https://api.anthropic.com/v1", transport="http")
 
 **Solution:**
 ```python
-from mcpclient.guardrails import WordMaskGuardrail, PIIGuardrail, InjectionGuardrail
+from mcpconn.guardrails import WordMaskGuardrail, PIIGuardrail, InjectionGuardrail
 
-client = MCPClient(llm_provider="openai", api_key="...")
+client = mcpconn(llm_provider="openai", api_key="...")
 client.add_guardrail(WordMaskGuardrail("mask_secret", ["secret"]))
 client.add_guardrail(PIIGuardrail("pii"))
 client.add_guardrail(InjectionGuardrail("injection"))
@@ -135,10 +135,10 @@ await client.connect("https://my-ai-server.com/api", transport="http")
 **Solution:**
 ```python
 import asyncio
-from mclpclient import MCPClient
+from mclpclient import mcpconn
 
 async def ask_ai(message):
-    client = MCPClient(llm_provider="anthropic")
+    client = mcpconn(llm_provider="anthropic")
     await client.connect("python examples/simple_server/main.py")
     await client.start_conversation()
     response = await client.query(message)
@@ -155,12 +155,12 @@ asyncio.run(main())
 
 ---
 
-## Extending mcpclient
+## Extending mcpconn
 
 ### Adding a New LLM Provider
 1. Subclass `BaseProvider` (see `llm/anthropic.py` or `llm/openai.py` for reference).
 2. Implement methods for starting conversations, sending messages, and managing history.
-3. Register your provider in `MCPClient`.
+3. Register your provider in `mcpconn`.
 
 ### Adding a New Guardrail
 1. Subclass `BaseGuardrail`.
@@ -171,10 +171,10 @@ asyncio.run(main())
 
 ## Project Structure
 
-- `mcpclient/client.py`: Main client logic.
-- `mcpclient/llm/`: LLM provider integrations.
-- `mcpclient/guardrails.py`: Security/content guardrails.
-- `mcpclient/transport.py`: Transport management.
+- `mcpconn/client.py`: Main client logic.
+- `mcpconn/llm/`: LLM provider integrations.
+- `mcpconn/guardrails.py`: Security/content guardrails.
+- `mcpconn/transport.py`: Transport management.
 - `examples/`: Example servers and usage scripts.
 - `docs/`: Documentation source.
 
@@ -182,8 +182,8 @@ asyncio.run(main())
 
 ## Documentation & Support
 
-- **Full Docs**: [https://2796gaurav.github.io/mcpclient](https://2796gaurav.github.io/mcpclient)
-- **GitHub**: [https://github.com/2796gaurav/mcpclient](https://github.com/2796gaurav/mcpclient)
+- **Full Docs**: [https://2796gaurav.github.io/mcpconn](https://2796gaurav.github.io/mcpconn)
+- **GitHub**: [https://github.com/2796gaurav/mcpconn](https://github.com/2796gaurav/mcpconn)
 - **Issues/Support**: Open an issue on GitHub or email 2796gaurav@gmail.com
 
 ---
@@ -199,7 +199,7 @@ asyncio.run(main())
 
 ## Final Thoughts
 
-`mcpclient` is a powerful, extensible bridge between your Python apps and the world of AI models. Whether you’re building chatbots, automation tools, or research prototypes, it gives you a secure, unified, and future-proof foundation.
+`mcpconn` is a powerful, extensible bridge between your Python apps and the world of AI models. Whether you’re building chatbots, automation tools, or research prototypes, it gives you a secure, unified, and future-proof foundation.
 
 ---
 
