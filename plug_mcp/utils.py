@@ -11,8 +11,8 @@ def load_env_vars(env_file=None):
     if env_file and os.path.exists(env_file):
         with open(env_file) as f:
             for line in f:
-                if '=' in line and not line.startswith('#'):
-                    key, value = line.strip().split('=', 1)
+                if "=" in line and not line.startswith("#"):
+                    key, value = line.strip().split("=", 1)
                     os.environ[key] = value
 
 
@@ -26,11 +26,11 @@ def get_server_command(server_path):
     parts = server_path.split()
     command = parts[0]
     args = parts[1:] if len(parts) > 1 else []
-    
+
     # Handle Python scripts
-    if command.endswith('.py'):
-        return 'python', [command] + args
-    
+    if command.endswith(".py"):
+        return "python", [command] + args
+
     return command, args
 
 
@@ -53,5 +53,5 @@ def format_tool_for_llm(tool):
     return {
         "name": tool.name,
         "description": tool.description,
-        "input_schema": tool.inputSchema
+        "input_schema": tool.inputSchema,
     }

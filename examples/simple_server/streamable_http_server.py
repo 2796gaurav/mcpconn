@@ -102,7 +102,9 @@ Forecast: {period['detailedForecast']}
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run MCP Streamable HTTP based server")
-    parser.add_argument("--port", type=int, default=8123, help="Localhost port to listen on")
+    parser.add_argument(
+        "--port", type=int, default=8123, help="Localhost port to listen on"
+    )
     args = parser.parse_args()
 
     # Start the server with Streamable HTTP transport

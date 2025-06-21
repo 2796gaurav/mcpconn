@@ -10,10 +10,12 @@ logger = logging.getLogger(__name__)
 
 class AnthropicProvider:
     """Anthropic Claude provider."""
-    
-    def __init__(self, api_key=None, model="claude-3-5-sonnet-20241022", ssl_verify=True):
+
+    def __init__(
+        self, api_key=None, model="claude-3-5-sonnet-20241022", ssl_verify=True
+    ):
         from anthropic import Anthropic
-        
+
         http_client = httpx.Client(verify=ssl_verify)
         self.client = Anthropic(api_key=api_key, http_client=http_client)
         self.model = model
@@ -31,7 +33,7 @@ class AnthropicProvider:
             # Generate unique ID for each conversation
             self.conversation_id = str(uuid.uuid4())
             self.message_history = []
-        
+
         logger.info(f"Started conversation: {self.conversation_id}")
         return self.conversation_id
 
@@ -43,11 +45,8 @@ class AnthropicProvider:
         """Add message to conversation history."""
         if not self.conversation_id:
             self.start_conversation()
-        
-        self.message_history.append({
-            "role": role,
-            "content": content
-        })
+
+        self.message_history.append({"role": role, "content": content})
         logger.debug(f"Added {role} message to conversation {self.conversation_id}")
 
     def get_history(self) -> List[Dict[str, Any]]:
@@ -59,7 +58,9 @@ class AnthropicProvider:
         self.message_history = []
         logger.info(f"Cleared history for conversation: {self.conversation_id}")
 
-    async def create_completion(self, messages, tools, max_tokens=1000, conversation_id: Optional[str] = None):
+    async def create_completion(
+        self, messages, tools, max_tokens=1000, conversation_id: Optional[str] = None
+    ):
         """Create completion with Claude."""
         try:
             # Handle conversation ID logic
@@ -75,8 +76,10 @@ class AnthropicProvider:
                 # Generate unique ID for this message (treat as independent conversation)
                 self.start_conversation()
                 use_history = False
-                logger.info(f"Generated unique conversation ID for independent message: {self.conversation_id}")
-            
+                logger.info(
+                    f"Generated unique conversation ID for independent message: {self.conversation_id}"
+                )
+
             # Prepare messages based on conversation mode
             if use_history and self.message_history:
                 # Use conversation history
@@ -89,41 +92,42 @@ class AnthropicProvider:
                     all_messages = messages
                     # Add to history for future reference
                     for msg in messages:
-                        self.add_to_history(msg.get("role", "user"), msg.get("content", ""))
+                        self.add_to_history(
+                            msg.get("role", "user"), msg.get("content", "")
+                        )
             else:
                 # Independent message mode - use only provided messages
                 all_messages = messages
                 # Add to history for this conversation
                 for msg in messages:
                     self.add_to_history(msg.get("role", "user"), msg.get("content", ""))
-            
+
             response = self.client.messages.create(
                 model=self.model,
                 max_tokens=max_tokens,
                 messages=all_messages,
-                tools=tools if tools else None
+                tools=tools if tools else None,
             )
-            
+
             # Add assistant response to history
             self.add_to_history("assistant", response.content)
-            
+
             # Convert response to consistent format
             content_list = []
             for item in response.content:
-                if hasattr(item, 'type'):
-                    if item.type == 'text':
-                        content_list.append({
-                            "type": "text",
-                            "text": item.text
-                        })
-                    elif item.type == 'tool_use':
-                        content_list.append({
-                            "type": "tool_use",
-                            "id": item.id,
-                            "name": item.name,
-                            "input": item.input
-                        })
-            
+                if hasattr(item, "type"):
+                    if item.type == "text":
+                        content_list.append({"type": "text", "text": item.text})
+                    elif item.type == "tool_use":
+                        content_list.append(
+                            {
+                                "type": "tool_use",
+                                "id": item.id,
+                                "name": item.name,
+                                "input": item.input,
+                            }
+                        )
+
             return {
                 "content": content_list,
                 "model": response.model,
@@ -131,8 +135,8 @@ class AnthropicProvider:
                 "independent_message": not use_history,
                 "usage": {
                     "input_tokens": response.usage.input_tokens,
-                    "output_tokens": response.usage.output_tokens
-                }
+                    "output_tokens": response.usage.output_tokens,
+                },
             }
         except Exception as e:
             logger.error(f"Anthropic API error: {e}")
@@ -143,7 +147,7 @@ class AnthropicProvider:
         return {
             "conversation_id": self.conversation_id,
             "message_history": self.message_history.copy(),
-            "model": self.model
+            "model": self.model,
         }
 
     def import_conversation(self, conversation_data: Dict[str, Any]):

@@ -6,6 +6,24 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Documentation](https://img.shields.io/badge/Documentation-blue.svg)](https://2796gaurav.github.io/plug_mcp)
 
+## Table of Contents
+
+- [plug_mcp: The Missing Connector for AI](#plug_mcp-the-missing-connector-for-ai)
+  - [✨ Features](#-features)
+  - [🚀 Getting Started](#-getting-started)
+    - [Installation](#installation)
+    - [Quick Start](#quick-start)
+  - [📚 Documentation](#-documentation)
+  - [🗺️ Roadmap](#️-roadmap)
+  - [🤝 Contributing](#-contributing)
+  - [📄 License](#-license)
+  - [⚠️ Disclaimer](#️-disclaimer)
+  - [Code of Conduct](#code-of-conduct)
+  - [🛡️ Security](#️-security)
+  - [🌟 Showcase](#-showcase)
+  - [💬 Support](#-support)
+  - [🐍 Supported Python Versions](#-supported-python-versions)
+
 ## ✨ Features
 
 - **Simplified Client Interface**: A high-level `MCPClient` for easy interaction with MCP servers.
@@ -52,7 +70,7 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-## �� Documentation
+## 📚 Documentation
 
 For full details on all features and the complete API reference, please visit our **[documentation site](https://2796gaurav.github.io/plug_mcp)**.
 
@@ -101,4 +119,13 @@ Have you built something cool with `plug_mcp`? Written an article or created a v
 
 ## 💬 Support
 
-If you have questions or need help, please open an issue in the [issue tracker](https://github.com/2796gaurav/plug_mcp/issues). 
+If you have questions or need help, please open an issue in the [issue tracker](https://github.com/2796gaurav/plug_mcp/issues).
+
+## 🐍 Supported Python Versions
+
+`plug_mcp` is tested and supported on the following Python versions:
+
+- Python 3.8
+- Python 3.9
+- Python 3.10
+- Python 3.11 

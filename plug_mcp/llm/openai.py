@@ -10,10 +10,10 @@ logger = logging.getLogger(__name__)
 
 class OpenAIProvider:
     """OpenAI provider with MCP support via Responses API."""
-    
+
     def __init__(self, api_key=None, model="gpt-4.1", ssl_verify=True):
         from openai import OpenAI
-        
+
         http_client = httpx.Client(verify=ssl_verify)
         self.client = OpenAI(api_key=api_key, http_client=http_client)
         self.model = model
@@ -35,7 +35,7 @@ class OpenAIProvider:
             self.conversation_id = str(uuid.uuid4())
             self._previous_response_id = None
             self.message_history = []
-        
+
         logger.info(f"Started conversation: {self.conversation_id}")
         return self.conversation_id
 
@@ -47,11 +47,8 @@ class OpenAIProvider:
         """Add message to conversation history."""
         if not self.conversation_id:
             self.start_conversation()
-        
-        self.message_history.append({
-            "role": role,
-            "content": content
-        })
+
+        self.message_history.append({"role": role, "content": content})
         logger.debug(f"Added {role} message to conversation {self.conversation_id}")
 
     def get_history(self) -> List[Dict[str, Any]]:
@@ -64,36 +61,43 @@ class OpenAIProvider:
         self._previous_response_id = None
         logger.info(f"Cleared history for conversation: {self.conversation_id}")
 
-    def add_mcp_server(self, server_url, server_label, require_approval="always", allowed_tools=None, **kwargs):
+    def add_mcp_server(
+        self,
+        server_url,
+        server_label,
+        require_approval="always",
+        allowed_tools=None,
+        **kwargs,
+    ):
         """Add MCP server configuration."""
         server_config = {
             "type": "mcp",
             "server_url": server_url,
             "server_label": server_label,
-            "require_approval": require_approval
+            "require_approval": require_approval,
         }
-        
+
         if allowed_tools:
             server_config["allowed_tools"] = allowed_tools
-        
+
         self._mcp_servers.append(server_config)
         logger.info(f"Added MCP server: {server_label} at {server_url}")
 
     def _get_item_type(self, item):
         """Get item type from response."""
-        if hasattr(item, 'type'):
+        if hasattr(item, "type"):
             return item.type
         elif isinstance(item, dict):
-            return item.get('type')
+            return item.get("type")
         else:
             class_name = item.__class__.__name__.lower()
-            if 'approval' in class_name:
-                return 'mcp_approval_request'
-            elif 'call' in class_name:
-                return 'mcp_call'
-            elif 'text' in class_name:
-                return 'text'
-            return 'unknown'
+            if "approval" in class_name:
+                return "mcp_approval_request"
+            elif "call" in class_name:
+                return "mcp_call"
+            elif "text" in class_name:
+                return "text"
+            return "unknown"
 
     def _extract_attr(self, item, attr, default=None):
         """Extract attribute from item."""
@@ -103,7 +107,14 @@ class OpenAIProvider:
             return item.get(attr, default)
         return default
 
-    async def create_completion(self, messages, tools, max_tokens=None, user_input=None, conversation_id: Optional[str] = None):
+    async def create_completion(
+        self,
+        messages,
+        tools,
+        max_tokens=None,
+        user_input=None,
+        conversation_id: Optional[str] = None,
+    ):
         """Create completion with OpenAI Responses API."""
         try:
             # Handle conversation ID logic
@@ -119,8 +130,10 @@ class OpenAIProvider:
                 # Generate unique ID for this message (treat as independent conversation)
                 self.start_conversation()
                 use_history = False
-                logger.info(f"Generated unique conversation ID for independent message: {self.conversation_id}")
-            
+                logger.info(
+                    f"Generated unique conversation ID for independent message: {self.conversation_id}"
+                )
+
             # Extract user input if not provided
             if user_input is None:
                 user_messages = [msg for msg in messages if msg.get("role") == "user"]
@@ -128,62 +141,70 @@ class OpenAIProvider:
                     last_msg = user_messages[-1]
                     user_input = last_msg.get("content", "")
                     if isinstance(user_input, list):
-                        text_parts = [item.get("text", "") for item in user_input if item.get("type") == "text"]
+                        text_parts = [
+                            item.get("text", "")
+                            for item in user_input
+                            if item.get("type") == "text"
+                        ]
                         user_input = " ".join(text_parts)
                 else:
                     user_input = ""
-            
+
             # Add user message to history
             self.add_to_history("user", user_input)
-            
+
             # Prepare request
             request_params = {
                 "model": self.model,
                 "input": user_input,
-                "tools": self._mcp_servers
+                "tools": self._mcp_servers,
             }
-            
+
             if max_tokens:
                 request_params["max_tokens"] = max_tokens
-            
+
             # Only use previous_response_id if we're in conversation mode
             if use_history and self._previous_response_id:
                 request_params["previous_response_id"] = self._previous_response_id
-            
+
             # Create response
             response = self.client.responses.create(**request_params)
             self._previous_response_id = response.id
-            
+
             # Check for approval requests
             approval_requests = []
             for item in response.output:
                 if self._get_item_type(item) == "mcp_approval_request":
-                    approval_requests.append({
-                        "id": self._extract_attr(item, "id"),
-                        "type": "mcp_approval_request",
-                        "name": self._extract_attr(item, "name"),
-                        "arguments": self._extract_attr(item, "arguments"),
-                        "server_label": self._extract_attr(item, "server_label")
-                    })
-            
+                    approval_requests.append(
+                        {
+                            "id": self._extract_attr(item, "id"),
+                            "type": "mcp_approval_request",
+                            "name": self._extract_attr(item, "name"),
+                            "arguments": self._extract_attr(item, "arguments"),
+                            "server_label": self._extract_attr(item, "server_label"),
+                        }
+                    )
+
             if approval_requests:
                 return {
-                    "content": [{"type": "text", "text": "Approval required for MCP tool calls"}],
+                    "content": [
+                        {"type": "text", "text": "Approval required for MCP tool calls"}
+                    ],
                     "model": response.model,
                     "conversation_id": self.conversation_id,
                     "independent_message": not use_history,
                     "approval_requests": approval_requests,
                     "response_id": response.id,
-                    "requires_approval": True
+                    "requires_approval": True,
                 }
-            
+
             # Extract text and MCP calls
             text_parts = []
             mcp_calls = []
-            
+
             for item in response.output:
                 item_type = self._get_item_type(item)
-                
+
                 if item_type == "text":
                     content = self._extract_attr(item, "content", "")
                     if content:
@@ -195,23 +216,25 @@ class OpenAIProvider:
                         "arguments": self._extract_attr(item, "arguments"),
                         "output": self._extract_attr(item, "output"),
                         "error": self._extract_attr(item, "error"),
-                        "server_label": self._extract_attr(item, "server_label")
+                        "server_label": self._extract_attr(item, "server_label"),
                     }
                     mcp_calls.append(call_info)
-                    
+
                     # Add tool output to text
                     tool_output = call_info.get("output", "")
                     if tool_output:
-                        text_parts.append(f"[Tool '{call_info.get('name')}': {tool_output}]")
-            
+                        text_parts.append(
+                            f"[Tool '{call_info.get('name')}': {tool_output}]"
+                        )
+
             # Get final text
-            final_text = getattr(response, 'output_text', None) or " ".join(text_parts)
+            final_text = getattr(response, "output_text", None) or " ".join(text_parts)
             if not final_text.strip():
                 final_text = "Hello! How can I help you today?"
-            
+
             # Add assistant response to history
             self.add_to_history("assistant", final_text)
-            
+
             return {
                 "content": [{"type": "text", "text": final_text}],
                 "model": response.model,
@@ -220,9 +243,9 @@ class OpenAIProvider:
                 "mcp_calls": mcp_calls,
                 "response_id": response.id,
                 "requires_approval": False,
-                "output_text": final_text
+                "output_text": final_text,
             }
-            
+
         except Exception as e:
             logger.error(f"OpenAI API error: {e}")
             raise RuntimeError(f"OpenAI API error: {e}")
@@ -232,27 +255,29 @@ class OpenAIProvider:
         try:
             if not self._previous_response_id:
                 raise ValueError("No previous response ID for approval")
-            
+
             response = self.client.responses.create(
                 model=self.model,
                 tools=self._mcp_servers,
                 previous_response_id=self._previous_response_id,
-                input=[{
-                    "type": "mcp_approval_response",
-                    "approve": approve,
-                    "approval_request_id": approval_request_id
-                }]
+                input=[
+                    {
+                        "type": "mcp_approval_response",
+                        "approve": approve,
+                        "approval_request_id": approval_request_id,
+                    }
+                ],
             )
-            
+
             self._previous_response_id = response.id
-            
+
             # Process response
             text_parts = []
             mcp_calls = []
-            
+
             for item in response.output:
                 item_type = self._get_item_type(item)
-                
+
                 if item_type == "text":
                     content = self._extract_attr(item, "content", "")
                     if content:
@@ -262,19 +287,21 @@ class OpenAIProvider:
                         "id": self._extract_attr(item, "id"),
                         "name": self._extract_attr(item, "name"),
                         "output": self._extract_attr(item, "output"),
-                        "error": self._extract_attr(item, "error")
+                        "error": self._extract_attr(item, "error"),
                     }
                     mcp_calls.append(call_info)
-                    
+
                     tool_output = call_info.get("output", "")
                     if tool_output:
-                        text_parts.append(f"[Tool '{call_info.get('name')}': {tool_output}]")
-            
-            final_text = getattr(response, 'output_text', None) or " ".join(text_parts)
-            
+                        text_parts.append(
+                            f"[Tool '{call_info.get('name')}': {tool_output}]"
+                        )
+
+            final_text = getattr(response, "output_text", None) or " ".join(text_parts)
+
             # Add assistant response to history
             self.add_to_history("assistant", final_text)
-            
+
             return {
                 "content": [{"type": "text", "text": final_text}],
                 "model": response.model,
@@ -282,9 +309,9 @@ class OpenAIProvider:
                 "mcp_calls": mcp_calls,
                 "response_id": response.id,
                 "requires_approval": False,
-                "output_text": final_text
+                "output_text": final_text,
             }
-            
+
         except Exception as e:
             logger.error(f"OpenAI approval error: {e}")
             raise RuntimeError(f"OpenAI approval error: {e}")
@@ -301,7 +328,7 @@ class OpenAIProvider:
             "conversation_id": self.conversation_id,
             "message_history": self.message_history.copy(),
             "model": self.model,
-            "previous_response_id": self._previous_response_id
+            "previous_response_id": self._previous_response_id,
         }
 
     def import_conversation(self, conversation_data: Dict[str, Any]):

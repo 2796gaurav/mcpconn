@@ -21,10 +21,7 @@ USER_AGENT = "weather-app/1.0"
 
 async def make_nws_request(url: str) -> dict[str, Any] | None:
     """Make a request to the NWS API with proper error handling."""
-    headers = {
-        "User-Agent": USER_AGENT,
-        "Accept": "application/geo+json"
-    }
+    headers = {"User-Agent": USER_AGENT, "Accept": "application/geo+json"}
     # The line below is modified to include verify=False
     async with httpx.AsyncClient(verify=False) as client:
         try:
@@ -136,12 +133,12 @@ async def get_current_conditions(latitude: float, longitude: float) -> str:
         return "Unable to fetch current conditions."
 
     props = observation_data["properties"]
-    
+
     # Convert temperature from Celsius to Fahrenheit if needed
     temp_c = props.get("temperature", {}).get("value")
     temp_str = "Unknown"
     if temp_c is not None:
-        temp_f = (temp_c * 9/5) + 32
+        temp_f = (temp_c * 9 / 5) + 32
         temp_str = f"{temp_f:.1f}°F ({temp_c:.1f}°C)"
 
     return f"""
@@ -164,9 +161,9 @@ def create_starlette_app(mcp_server: Server, *, debug: bool = False) -> Starlett
         """Handle SSE connection and return proper response."""
         try:
             async with sse.connect_sse(
-                    request.scope,
-                    request.receive,
-                    request._send,  # noqa: SLF001
+                request.scope,
+                request.receive,
+                request._send,  # noqa: SLF001
             ) as (read_stream, write_stream):
                 await mcp_server.run(
                     read_stream,
@@ -192,10 +189,10 @@ if __name__ == "__main__":
     mcp_server = mcp._mcp_server  # noqa: WPS437
 
     import argparse
-    
-    parser = argparse.ArgumentParser(description='Run MCP SSE-based server')
-    parser.add_argument('--host', default='0.0.0.0', help='Host to bind to')
-    parser.add_argument('--port', type=int, default=8080, help='Port to listen on')
+
+    parser = argparse.ArgumentParser(description="Run MCP SSE-based server")
+    parser.add_argument("--host", default="0.0.0.0", help="Host to bind to")
+    parser.add_argument("--port", type=int, default=8080, help="Port to listen on")
     args = parser.parse_args()
 
     print(f"Starting SSE MCP server on {args.host}:{args.port}")

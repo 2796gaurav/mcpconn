@@ -22,6 +22,7 @@ USER_AGENT = "weather-app/1.0"
 
 # SSL verification setting - can be controlled via environment variable
 import os
+
 SSL_VERIFY = os.getenv("SSL_VERIFY", "true").lower() not in ("false", "0", "no")
 SSL_VERIFY = False
 
@@ -30,12 +31,9 @@ logger.info(f"SSL verification enabled: {SSL_VERIFY}")
 
 async def make_nws_request(url: str) -> dict[str, Any] | None:
     """Make a request to the NWS API with proper error handling."""
-    headers = {
-        "User-Agent": USER_AGENT,
-        "Accept": "application/geo+json"
-    }
+    headers = {"User-Agent": USER_AGENT, "Accept": "application/geo+json"}
     logger.info(f"Making request to: {url} (SSL verify: {SSL_VERIFY})")
-    
+
     # Create client with SSL verification setting
     async with httpx.AsyncClient(verify=SSL_VERIFY) as client:
         try:
@@ -98,7 +96,7 @@ async def get_forecast(latitude: float, longitude: float) -> str:
         longitude: Longitude of the location
     """
     logger.info(f"Getting forecast for coordinates: {latitude}, {longitude}")
-    
+
     # First get the forecast grid endpoint
     points_url = f"{NWS_API_BASE}/points/{latitude},{longitude}"
     points_data = await make_nws_request(points_url)
@@ -110,11 +108,13 @@ async def get_forecast(latitude: float, longitude: float) -> str:
         # Get the forecast URL from the points response
         properties = points_data.get("properties", {})
         forecast_url = properties.get("forecast")
-        
+
         if not forecast_url:
-            logger.error(f"No forecast URL found in points response. Available properties: {list(properties.keys())}")
+            logger.error(
+                f"No forecast URL found in points response. Available properties: {list(properties.keys())}"
+            )
             return "No forecast URL available for this location. The coordinates might be outside the NWS coverage area."
-        
+
         logger.info(f"Fetching forecast from: {forecast_url}")
         forecast_data = await make_nws_request(forecast_url)
 
@@ -124,11 +124,13 @@ async def get_forecast(latitude: float, longitude: float) -> str:
         # Format the periods into a readable forecast
         forecast_properties = forecast_data.get("properties", {})
         periods = forecast_properties.get("periods", [])
-        
+
         if not periods:
-            logger.error(f"No forecast periods in response. Available forecast properties: {list(forecast_properties.keys())}")
+            logger.error(
+                f"No forecast periods in response. Available forecast properties: {list(forecast_properties.keys())}"
+            )
             return "No forecast periods available in the response."
-        
+
         forecasts = []
         for period in periods[:5]:  # Only show next 5 periods
             forecast = f"""
@@ -140,7 +142,7 @@ Forecast: {period.get('detailedForecast', 'No detailed forecast available')}
             forecasts.append(forecast)
 
         return "\n---\n".join(forecasts)
-        
+
     except Exception as e:
         logger.error(f"Error processing forecast data: {str(e)}")
         return f"Error processing forecast: {str(e)}"
@@ -148,4 +150,4 @@ Forecast: {period.get('detailedForecast', 'No detailed forecast available')}
 
 if __name__ == "__main__":
     # Initialize and run the server
-    mcp.run(transport='stdio')
+    mcp.run(transport="stdio")
