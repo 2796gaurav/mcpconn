@@ -4,6 +4,7 @@
 
 [![PyPI version](https://badge.fury.io/py/plug-mcp.svg)](https://badge.fury.io/py/plug-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Documentation](https://img.shields.io/badge/Documentation-blue.svg)](https://2796gaurav.github.io/plug_mcp)
 
 ## ✨ Features
 
@@ -51,12 +52,15 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-## 📚 Documentation
+## �� Documentation
 
-For more detailed information and advanced usage, please refer to the [examples](examples) directory.
+For full details on all features and the complete API reference, please visit our **[documentation site](https://2796gaurav.github.io/plug_mcp)**.
 
-- **[Simple Client](examples/simple_client)**: A great starting point for understanding the basic usage of `plug_mcp`.
-- **[Simple Server](examples/simple_server)**: A simple MCP server implementation.
+The documentation is automatically generated from the `main` branch and includes:
+
+- A full **Getting Started** guide.
+- In-depth **tutorials and examples**.
+- The complete **API Reference**.
 
 ## 🗺️ Roadmap
 

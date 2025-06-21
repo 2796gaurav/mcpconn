@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "plug-mcp"
-version = "0.1.0"
+version = "0.1.1"
 description = "Simplified MCP client wrapper for efficient server interactions"
 readme = "README.md"
 license = "MIT"
