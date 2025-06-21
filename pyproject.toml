@@ -3,8 +3,8 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "plug-mcp"
-version = "0.1.2"
+name = "mcpclient"
+version = "0.0.1"
 description = "Simplified MCP client wrapper for efficient server interactions"
 readme = "README.md"
 license = "MIT"
@@ -39,8 +39,8 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/2796gaurav/plug_mcp"
-Repository = "https://github.com/2796gaurav/plug_mcp"
+Homepage = "https://github.com/2796gaurav/mcpclient"
+Repository = "https://github.com/2796gaurav/mcpclient"
 
 [tool.black]
 line-length = 88

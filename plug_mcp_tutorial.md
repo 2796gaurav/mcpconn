@@ -1,12 +1,12 @@
-# plug_mcp: The Missing Connector for AI – Deep Dive, Use Cases, and Tutorial
+# mcpclient: The Missing Connector for AI – Deep Dive, Use Cases, and Tutorial
 
 ## Introduction
 
-**plug_mcp** is a Python library that makes it easy to connect your applications to AI models using the Multi-purpose Cooperative Protocol (MCP). It wraps the lower-level `mcp` library, providing a simple, unified, and secure interface for working with multiple AI providers (like OpenAI and Anthropic) and different connection methods (STDIO, SSE, HTTP).
+**mcpclient** is a Python library that makes it easy to connect your applications to AI models using the Multi-purpose Cooperative Protocol (MCP). It wraps the lower-level `mcp` library, providing a simple, unified, and secure interface for working with multiple AI providers (like OpenAI and Anthropic) and different connection methods (STDIO, SSE, HTTP).
 
 This guide will:
 - Explain the problems with traditional MCP clients
-- Show how plug_mcp solves them
+- Show how mcpclient solves them
 - Provide detailed examples and use cases
 - Help you get started and extend the library for your needs
 
@@ -34,7 +34,7 @@ This guide will:
 
 ---
 
-## The Solution: How plug_mcp Helps
+## The Solution: How mcpclient Helps
 
 - **Unified Client**: One interface for all providers and transports.
 - **Built-in Guardrails**: Automatic content filtering, PII masking, and injection detection.
@@ -47,7 +47,7 @@ This guide will:
 ## Installation
 
 ```bash
-pip install plug_mcp
+pip install mcpclient
 ```
 
 ---
@@ -58,7 +58,7 @@ Connect to an Anthropic-powered local server and chat with an AI model:
 
 ```python
 import asyncio
-from plug_mcp.client import MCPClient
+from mclpclient import MCPClient
 
 async def main():
     # Connect to a local server using STDIO
@@ -101,7 +101,7 @@ await client.connect("https://api.anthropic.com/v1", transport="http")
 
 **Solution:**
 ```python
-from plug_mcp.guardrails import WordMaskGuardrail, PIIGuardrail, InjectionGuardrail
+from mcpclient.guardrails import WordMaskGuardrail, PIIGuardrail, InjectionGuardrail
 
 client = MCPClient(llm_provider="openai", api_key="...")
 client.add_guardrail(WordMaskGuardrail("mask_secret", ["secret"]))
@@ -135,7 +135,7 @@ await client.connect("https://my-ai-server.com/api", transport="http")
 **Solution:**
 ```python
 import asyncio
-from plug_mcp.client import MCPClient
+from mclpclient import MCPClient
 
 async def ask_ai(message):
     client = MCPClient(llm_provider="anthropic")
@@ -155,7 +155,7 @@ asyncio.run(main())
 
 ---
 
-## Extending plug_mcp
+## Extending mcpclient
 
 ### Adding a New LLM Provider
 1. Subclass `BaseProvider` (see `llm/anthropic.py` or `llm/openai.py` for reference).
@@ -171,10 +171,10 @@ asyncio.run(main())
 
 ## Project Structure
 
-- `plug_mcp/client.py`: Main client logic.
-- `plug_mcp/llm/`: LLM provider integrations.
-- `plug_mcp/guardrails.py`: Security/content guardrails.
-- `plug_mcp/transport.py`: Transport management.
+- `mcpclient/client.py`: Main client logic.
+- `mcpclient/llm/`: LLM provider integrations.
+- `mcpclient/guardrails.py`: Security/content guardrails.
+- `mcpclient/transport.py`: Transport management.
 - `examples/`: Example servers and usage scripts.
 - `docs/`: Documentation source.
 
@@ -182,8 +182,8 @@ asyncio.run(main())
 
 ## Documentation & Support
 
-- **Full Docs**: [https://2796gaurav.github.io/plug_mcp](https://2796gaurav.github.io/plug_mcp)
-- **GitHub**: [https://github.com/2796gaurav/plug_mcp](https://github.com/2796gaurav/plug_mcp)
+- **Full Docs**: [https://2796gaurav.github.io/mcpclient](https://2796gaurav.github.io/mcpclient)
+- **GitHub**: [https://github.com/2796gaurav/mcpclient](https://github.com/2796gaurav/mcpclient)
 - **Issues/Support**: Open an issue on GitHub or email 2796gaurav@gmail.com
 
 ---
@@ -199,7 +199,7 @@ asyncio.run(main())
 
 ## Final Thoughts
 
-`plug_mcp` is a powerful, extensible bridge between your Python apps and the world of AI models. Whether you’re building chatbots, automation tools, or research prototypes, it gives you a secure, unified, and future-proof foundation.
+`mcpclient` is a powerful, extensible bridge between your Python apps and the world of AI models. Whether you’re building chatbots, automation tools, or research prototypes, it gives you a secure, unified, and future-proof foundation.
 
 ---
 

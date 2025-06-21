@@ -1,7 +1,7 @@
-site_name: plug_mcp
-site_url: https://2796gaurav.github.io/plug_mcp
-repo_url: https://github.com/2796gaurav/plug_mcp
-repo_name: 2796gaurav/plug_mcp
+site_name: mcpclient
+site_url: https://2796gaurav.github.io/mcpclient
+repo_url: https://github.com/2796gaurav/mcpclient
+repo_name: 2796gaurav/mcpclient
 edit_uri: edit/main/docs/
 
 theme:

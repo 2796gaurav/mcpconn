@@ -2,7 +2,7 @@
 """
 Simple MCP Client with Conversation ID - Basic conversation management example
 
-Shows how to use plug_mcp.client.MCPClient with conversation IDs for maintaining context.
+Shows how to use mclpclient.MCPClient with conversation IDs for maintaining context.
 """
 
 import asyncio
@@ -10,16 +10,16 @@ import argparse
 import sys
 import os
 
-# Add parent directory to path to import plug_mcp
+# Add parent directory to path to import mcpclient
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from plug_mcp.client import MCPClient
+from mcpclient import MCPClient
 
 
 async def main():
     """Simple MCP client with conversation ID example."""
     parser = argparse.ArgumentParser(
-        description="Simple MCP Client with Conversation ID using plug_mcp package"
+        description="Simple MCP Client with Conversation ID using mcpclient package"
     )
     parser.add_argument("server", help="Server path (stdio) or URL (HTTP)")
     parser.add_argument(

@@ -1,12 +1,12 @@
 # API Reference
 
-This page provides a reference for the `plug_mcp` library's public API.
+This page provides a reference for the `mcpclient` library's public API.
 
 ## `MCPClient`
 
 The `MCPClient` is the main entry point for interacting with MCP servers.
 
-::: plug_mcp.client.MCPClient
+::: mclpclient.MCPClient
     options:
       show_root_heading: true
       show_source: false

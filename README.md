@@ -1,14 +1,14 @@
-# plug_mcp: The Missing Connector for AI
+# mcpclient: The Missing Connector for AI
 
-**plug_mcp** is a Python library that provides a simple and efficient way to connect your applications to AI models using the Multi-purpose Cooperative Protocol (MCP). It acts as a wrapper around the `mcp` library, offering a streamlined client interface for seamless integration with various AI providers and transport protocols.
+**mcpclient** is a Python library that provides a simple and efficient way to connect your applications to AI models using the Multi-purpose Cooperative Protocol (MCP). It acts as a wrapper around the `mcp` library, offering a streamlined client interface for seamless integration with various AI providers and transport protocols.
 
-[![PyPI version](https://badge.fury.io/py/plug-mcp.svg)](https://badge.fury.io/py/plug-mcp)
+[![PyPI version](https://badge.fury.io/py/mcpclient.svg)](https://badge.fury.io/py/mcpclient)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Documentation](https://img.shields.io/badge/Documentation-blue.svg)](https://2796gaurav.github.io/plug_mcp)
+[![Documentation](https://img.shields.io/badge/Documentation-blue.svg)](https://2796gaurav.github.io/mcpclient)
 
 ## Table of Contents
 
-- [plug_mcp: The Missing Connector for AI](#plug_mcp-the-missing-connector-for-ai)
+- [mcpclient: The Missing Connector for AI](#mcpclient-the-missing-connector-for-ai)
   - [✨ Features](#-features)
   - [🚀 Getting Started](#-getting-started)
     - [Installation](#installation)
@@ -39,16 +39,16 @@
 ### Installation
 
 ```bash
-pip install plug_mcp
+pip install mcpclient
 ```
 
 ### Quick Start
 
-Here's a simple example of how to use `plug_mcp` to connect to an MCP server and interact with an AI model:
+Here's a simple example of how to use `mcpclient` to connect to an MCP server and interact with an AI model:
 
 ```python
 import asyncio
-from plug_mcp.client import MCPClient
+from mclpclient import MCPClient
 
 async def main():
     # Connect to a local server using STDIO
@@ -72,7 +72,7 @@ if __name__ == "__main__":
 
 ## 📚 Documentation
 
-For full details on all features and the complete API reference, please visit our **[documentation site](https://2796gaurav.github.io/plug_mcp)**.
+For full details on all features and the complete API reference, please visit our **[documentation site](https://2796gaurav.github.io/mcpclient)**.
 
 The documentation is automatically generated from the `main` branch and includes:
 
@@ -89,7 +89,7 @@ The documentation is automatically generated from the `main` branch and includes
 
 ## 🤝 Contributing 
 
-Contributions are welcome! If you'd like to contribute to `plug_mcp`, please follow these steps:
+Contributions are welcome! If you'd like to contribute to `mcpclient`, please follow these steps:
 
 1.  Fork the repository.
 2.  Create a new branch for your feature or bug fix.
@@ -99,7 +99,7 @@ Contributions are welcome! If you'd like to contribute to `plug_mcp`, please fol
 
 ## 📄 License
 
-`plug_mcp` is licensed under the [MIT License](LICENSE).
+`mcpclient` is licensed under the [MIT License](LICENSE).
 
 ## ⚠️ Disclaimer
 
@@ -115,15 +115,15 @@ If you discover a security vulnerability, please report it to us by emailing [27
 
 ## 🌟 Showcase
 
-Have you built something cool with `plug_mcp`? Written an article or created a video? We'd love to see it! Please open a pull request to add your project to this list.
+Have you built something cool with `mcpclient`? Written an article or created a video? We'd love to see it! Please open a pull request to add your project to this list.
 
 ## 💬 Support
 
-If you have questions or need help, please open an issue in the [issue tracker](https://github.com/2796gaurav/plug_mcp/issues).
+If you have questions or need help, please open an issue in the [issue tracker](https://github.com/2796gaurav/mcpclient/issues).
 
 ## 🐍 Supported Python Versions
 
-`plug_mcp` is tested and supported on the following Python versions:
+`mcpclient` is tested and supported on the following Python versions:
 
 - Python 3.8
 - Python 3.9

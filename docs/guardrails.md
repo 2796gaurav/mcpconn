@@ -1,6 +1,6 @@
 # Using Guardrails
 
-`plug_mcp` comes with a powerful, built-in guardrail system to help you secure your application and moderate content. Guardrails can inspect both user input before it's sent to the AI and the AI's response before it's sent to the user.
+`mcpclient` comes with a powerful, built-in guardrail system to help you secure your application and moderate content. Guardrails can inspect both user input before it's sent to the AI and the AI's response before it's sent to the user.
 
 ## How it Works
 
@@ -18,8 +18,8 @@ Here is a complete example of how to add and use multiple guardrails.
 
 ```python
 import asyncio
-from plug_mcp.client import MCPClient
-from plug_mcp.guardrails import PIIGuardrail, WordMaskGuardrail, InjectionGuardrail
+from mclpclient import MCPClient
+from mcpclient.guardrails import PIIGuardrail, WordMaskGuardrail, InjectionGuardrail
 
 async def main():
     client = MCPClient(llm_provider="openai")

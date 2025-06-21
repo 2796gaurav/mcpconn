@@ -1,10 +1,10 @@
 # MCP Examples
 
-This directory contains various examples demonstrating how to use the `plug_mcp` library.
+This directory contains various examples demonstrating how to use the `mcpclient` library.
 
 ## 🚀 Quick Start: Simple Client
 
-For users who want to understand how to use the `plug_mcp` package as an MCP client:
+For users who want to understand how to use the `mcpclient` package as an MCP client:
 
 ```bash
 cd simple_client
@@ -12,7 +12,7 @@ python simple_client.py --help
 ```
 
 The Simple Client demonstrates:
-- Basic usage of `plug_mcp.client.MCPClient`
+- Basic usage of `mclpclient.MCPClient`
 - All protocols (stdio, SSE, Streamable HTTP)
 - All LLMs (Anthropic Claude, OpenAI GPT)
 - Simple command-line interface
@@ -54,7 +54,7 @@ The Simple Client demonstrates:
 
 ## 📖 Documentation
 
-Each example includes comments and documentation explaining its purpose and usage. The Simple Client shows the basic pattern for using the `plug_mcp` package.
+Each example includes comments and documentation explaining its purpose and usage. The Simple Client shows the basic pattern for using the `mcpclient` package.
 
 ## 🤝 Contributing
 

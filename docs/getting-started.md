@@ -1,24 +1,24 @@
 # Getting Started
 
-This guide will help you get up and running with `plug_mcp`.
+This guide will help you get up and running with `mcpclient`.
 
 ## Installation
 
-To install `plug_mcp`, run the following command in your terminal:
+To install `mcpclient`, run the following command in your terminal:
 
 ```bash
-pip install plug_mcp
+pip install mcpclient
 ```
 
 This will install the core library and its dependencies.
 
 ## Quick Start
 
-Here's a simple example of how to use `plug_mcp` to connect to an MCP server and interact with an AI model:
+Here's a simple example of how to use `mcpclient` to connect to an MCP server and interact with an AI model:
 
 ```python
 import asyncio
-from plug_mcp.client import MCPClient
+from mclpclient import MCPClient
 
 async def main():
     # Connect to a local server using STDIO
@@ -48,4 +48,4 @@ This example demonstrates the basic workflow:
 4.  **Interact with the AI**: Use methods like `start_conversation()` and `query()` to have a conversation.
 5.  **Disconnect**: Cleanly close the connection with `await client.disconnect()`.
 
-For more detailed examples, please refer to the `examples` directory in the [project repository](https://github.com/2796gaurav/plug_mcp). 
+For more detailed examples, please refer to the `examples` directory in the [project repository](https://github.com/2796gaurav/mcpclient). 

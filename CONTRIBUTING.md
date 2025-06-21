@@ -1,14 +1,14 @@
-# Contributing to plug_mcp
+# Contributing to mcpclient
 
-First off, thank you for considering contributing to `plug_mcp`! It's people like you that make `plug_mcp` such a great tool.
+First off, thank you for considering contributing to `mcpclient`! It's people like you that make `mcpclient` such a great tool.
 
 We welcome contributions of all kinds, from bug reports and feature requests to code contributions and documentation improvements.
 
 ## Where to start
 
-- **Bug reports:** If you find a bug, please open an issue in the [issue tracker](https://github.com/2796gaurav/plug_mcp/issues). Please include as much information as possible, including the version of `plug_mcp` you are using, the version of Python you are using, and a code sample that reproduces the bug.
-- **Feature requests:** If you have an idea for a new feature, please open an issue in the [issue tracker](https://github.com/2796gaurav/plug_mcp/issues). Please describe the feature in as much detail as possible, including why you think it would be a good addition to `plug_mcp`.
-- **Code contributions:** If you would like to contribute code to `plug_mcp`, please see the "Code contributions" section below.
+- **Bug reports:** If you find a bug, please open an issue in the [issue tracker](https://github.com/2796gaurav/mcpclient/issues). Please include as much information as possible, including the version of `mcpclient` you are using, the version of Python you are using, and a code sample that reproduces the bug.
+- **Feature requests:** If you have an idea for a new feature, please open an issue in the [issue tracker](https://github.com/2796gaurav/mcpclient/issues). Please describe the feature in as much detail as possible, including why you think it would be a good addition to `mcpclient`.
+- **Code contributions:** If you would like to contribute code to `mcpclient`, please see the "Code contributions" section below.
 - **Documentation improvements:** If you would like to improve the documentation, please open a pull request with your changes.
 
 ## Code contributions
@@ -19,19 +19,19 @@ We welcome contributions of all kinds, from bug reports and feature requests to 
 2.  Clone your fork locally:
 
     ```bash
-    git clone https://github.com/YOUR_USERNAME/plug_mcp.git
+    git clone https://github.com/YOUR_USERNAME/mcpclient.git
     ```
 
 3.  Install the project in editable mode with the development dependencies:
 
     ```bash
-    cd plug_mcp
+    cd mcpclient
     pip install -e ".[dev]"
     ```
 
 ### Code style
 
-`plug_mcp` uses `black` for code formatting. Before submitting a pull request, please make sure that your code is formatted with `black`.
+`mcpclient` uses `black` for code formatting. Before submitting a pull request, please make sure that your code is formatted with `black`.
 
 To format your code, run the following command:
 
@@ -65,12 +65,12 @@ black .
 
 ## Dev Guide
 
-The `plug_mcp` library is designed to be extensible, allowing you to easily add new LLM providers, transports, or guardrails.
+The `mcpclient` library is designed to be extensible, allowing you to easily add new LLM providers, transports, or guardrails.
 
 ### Project Structure
 
 ```
-plug_mcp/
+mcpclient/
 ├── __init__.py
 ├── client.py        # High-level MCPClient for server interaction
 ├── guardrails.py    # Built-in security and content filtering
@@ -85,22 +85,22 @@ plug_mcp/
 
 ### Adding a new LLM Provider
 
-1.  Create a new file in the `plug_mcp/llm` directory (e.g., `my_provider.py`).
-2.  Create a new class that inherits from `LLMProvider` (from `plug_mcp.llm.base`).
+1.  Create a new file in the `mcpclient/llm` directory (e.g., `my_provider.py`).
+2.  Create a new class that inherits from `LLMProvider` (from `mcpclient.llm.base`).
 3.  Implement the `process_request` and `process_response` methods.
-4.  Add your new provider to the `LLM_PROVIDERS` dictionary in `plug_mcp/llm/__init__.py`.
+4.  Add your new provider to the `LLM_PROVIDERS` dictionary in `mcpclient/llm/__init__.py`.
 
 ### Adding a new Transport
 
-1.  Create a new class in `plug_mcp/transport.py` that inherits from `BaseTransport`.
+1.  Create a new class in `mcpclient/transport.py` that inherits from `BaseTransport`.
 2.  Implement the `connect` and `disconnect` methods.
 3.  Implement the `send` and `receive` methods to handle communication with the server.
 4.  Add your new transport to the `MCPClient`'s `connect` method as a new option.
 
 ### Adding a new Guardrail
 
-1.  Create a new function in `plug_mcp/guardrails.py` that takes a string as input and returns a modified string.
+1.  Create a new function in `mcpclient/guardrails.py` that takes a string as input and returns a modified string.
 2.  Add your new guardrail to the `Guardrails` class.
 3.  You can then enable or disable your guardrail through the `MCPClient`.
 
-Thank you for contributing to `plug_mcp`! 
+Thank you for contributing to `mcpclient`! 

@@ -1,6 +1,6 @@
 # Simple MCP Client
 
-Basic example showing how to use the `plug_mcp` package as an MCP client.
+Basic example showing how to use the `mcpclient` package as an MCP client.
 
 ## Quick Start
 
@@ -148,10 +148,10 @@ Options:
 
 ## How It Works
 
-The client uses the `plug_mcp.client.MCPClient` class:
+The client uses the `mclpclient.MCPClient` class:
 
 ```python
-from plug_mcp.client import MCPClient
+from mclpclient import MCPClient
 
 # Create client
 client = MCPClient(
@@ -194,7 +194,7 @@ history = client.get_conversation_history()
 
 ### With Guardrails
 ```python
-from plug_mcp.guardrails import WordMaskGuardrail, PIIGuardrail
+from mcpclient.guardrails import WordMaskGuardrail, PIIGuardrail
 
 # Create client
 client = MCPClient(llm_provider="anthropic", ssl_verify=False)

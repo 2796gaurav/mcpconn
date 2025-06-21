@@ -1,8 +1,8 @@
-# Welcome to plug_mcp
+# Welcome to mcpclient
 
-**plug_mcp** is a Python library that provides a simple and efficient way to connect your applications to AI models using the Multi-purpose Cooperative Protocol (MCP). It acts as a wrapper around the `mcp` library, offering a streamlined client interface for seamless integration with various AI providers and transport protocols.
+**mcpclient** is a Python library that provides a simple and efficient way to connect your applications to AI models using the Multi-purpose Cooperative Protocol (MCP). It acts as a wrapper around the `mcp` library, offering a streamlined client interface for seamless integration with various AI providers and transport protocols.
 
-[![PyPI version](https://badge.fury.io/py/plug-mcp.svg)](https://badge.fury.io/py/plug-mcp)
+[![PyPI version](https://badge.fury.io/py/mcpclient.svg)](https://badge.fury.io/py/mcpclient)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## ✨ Features
