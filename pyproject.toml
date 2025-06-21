@@ -37,7 +37,6 @@ dev = [
     "mkdocs>=1.5.0",
     "mkdocs-material>=9.0.0",
 ]
-
 [project.urls]
 Homepage = "https://github.com/2796gaurav/mcpconn"
 Repository = "https://github.com/2796gaurav/mcpconn"
