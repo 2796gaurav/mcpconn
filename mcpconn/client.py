@@ -124,9 +124,19 @@ class MCPClient:
 
         # Handle OpenAI provider differently
         if isinstance(self.llm, OpenAIProvider):
+            # Check for local/stdio/localhost usage
+            is_local = False
             if transport == "stdio":
-                raise ValueError("OpenAI provider doesn't support STDIO transport. Read more about here: https://platform.openai.com/docs/guides/tools-remote-mcp")
-
+                is_local = True
+            if isinstance(connection_string, str):
+                if connection_string.strip().startswith("python ") or connection_string.strip().startswith("./"):
+                    is_local = True
+                if "localhost" in connection_string or connection_string.strip().startswith("http://127.0.0.1") or connection_string.strip().startswith("http://0.0.0.0"):
+                    is_local = True
+            if is_local:
+                raise ValueError(
+                    "OpenAI provider only supports remote MCP endpoints. Local/STDIO/localhost servers are not supported. See: https://platform.openai.com/docs/guides/tools-remote-mcp"
+                )
             server_label = kwargs.get("server_label", "default_server")
             self.llm.add_mcp_server(connection_string, server_label, **kwargs)
             self._connected = True

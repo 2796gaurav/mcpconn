@@ -2,7 +2,7 @@
 
 ## Introduction
 
-**mcpconn** is a Python library that makes it easy to connect your applications to AI models using the Multi-purpose Cooperative Protocol (MCP). It wraps the lower-level `mcp` library, providing a simple, unified, and secure interface for working with multiple AI providers (like OpenAI and Anthropic) and different connection methods (STDIO, SSE, HTTP).
+**mcpconn** is a Python library that makes it easy to connect your applications to AI models using the Model Context Protocol (MCP). It wraps the lower-level `mcp` library, providing a simple, unified, and secure interface for working with multiple AI providers (like OpenAI and Anthropic) and different connection methods (STDIO, SSE, HTTP).
 
 This guide will:
 - Explain the problems with traditional MCP clients
@@ -89,8 +89,9 @@ if __name__ == "__main__":
 
 **Solution:**
 ```python
+# NOTE: OpenAI only supports remote MCP endpoints (not local/stdio/localhost). See: https://platform.openai.com/docs/guides/tools-remote-mcp
 client = mcpconn(llm_provider="openai", api_key="YOUR_OPENAI_KEY")
-await client.connect("https://api.openai.com/v1", transport="http")
+await client.connect("https://mcp.deepwiki.com/mcp", transport="http")
 # ...
 client = mcpconn(llm_provider="anthropic", api_key="YOUR_ANTHROPIC_KEY")
 await client.connect("https://api.anthropic.com/v1", transport="http")
@@ -199,7 +200,7 @@ asyncio.run(main())
 
 ## Final Thoughts
 
-`mcpconn` is a powerful, extensible bridge between your Python apps and the world of AI models. Whether you’re building chatbots, automation tools, or research prototypes, it gives you a secure, unified, and future-proof foundation.
+`mcpconn` is a powerful, extensible bridge between your Python apps and the world of AI models. Whether you're building chatbots, automation tools, or research prototypes, it gives you a secure, unified, and future-proof foundation.
 
 ---
 

@@ -4,5 +4,5 @@ from .client import MCPClient
 from .llm.anthropic import AnthropicProvider
 from .llm.openai import OpenAIProvider
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 __all__ = ["MCPClient", "AnthropicProvider", "OpenAIProvider"]

@@ -14,6 +14,8 @@ export OPENAI_API_KEY="your-key-here"
 python simple_client.py /path/to/server
 ```
 
+> **Note:** For Python scripts, do **not** include the 'python' prefix in the server path. The client will automatically use `python` to run `.py` files.
+
 ## Usage Examples
 
 ### STDIO Transport (Local Server)
@@ -40,11 +42,15 @@ python simple_client.py http://localhost:8000 --transport sse
 # Use Anthropic (default for example)
 python simple_client.py http://localhost:8000
 
-# Use OpenAI
-python simple_client.py http://localhost:8000 --provider openai
+## ⚠️ OpenAI Provider Limitation
+**OpenAI only supports remote MCP endpoints (not local/stdio/localhost).**
+See: https://platform.openai.com/docs/guides/tools-remote-mcp
 
-# Use specific OpenAI model
-python simple_client.py http://localhost:8000 --provider openai --model gpt-4.1
+# Use OpenAI (remote MCP only)
+python simple_client.py https://mcp.deepwiki.com/mcp --provider openai
+
+# Use specific OpenAI model (remote MCP only)
+python simple_client.py https://mcp.deepwiki.com/mcp --provider openai --model gpt-4.1
 ```
 
 ## Conversation Management
@@ -58,8 +64,8 @@ python simple_client_with_conversation_id.py /path/to/server --auto-generate
 # Start with specific conversation ID
 python simple_client_with_conversation_id.py /path/to/server --conversation-id "my-conversation-123"
 
-# Use different provider with conversation management
-python simple_client_with_conversation_id.py http://localhost:8000 --provider openai --auto-generate
+# Use different provider with conversation management (OpenAI remote MCP only)
+python simple_client_with_conversation_id.py https://mcp.deepwiki.com/mcp --provider openai --auto-generate
 ```
 
 ### Conversation Commands
@@ -79,8 +85,8 @@ python simple_client_with_guardrails.py /path/to/server --enable-all
 # Enable specific guardrails
 python simple_client_with_guardrails.py /path/to/server --enable-word-mask --enable-pii
 
-# Use with different provider
-python simple_client_with_guardrails.py http://localhost:8000 --provider openai --enable-all
+# Use with different provider (OpenAI remote MCP only)
+python simple_client_with_guardrails.py https://mcp.deepwiki.com/mcp --provider openai --enable-all
 ```
 
 ### Available Guardrails

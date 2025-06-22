@@ -30,7 +30,7 @@ Connects to an MCP server.
 
 **Parameters:**
 
-*   `connection_string` (str): The connection string for the server (e.g., a URL for HTTP, or a command for STDIO).
+*   `connection_string` (str): The connection string for the server (e.g., a URL for HTTP, or a command for STDIO). For Python scripts, do **not** include the 'python' prefix; it is added automatically for `.py` files.
 *   `transport` (str, optional): The transport protocol to use (`"stdio"`, `"sse"`, `"http"`). If `None`, it's inferred from the connection string.
 *   `headers` (dict, optional): A dictionary of headers to use for HTTP-based transports.
 

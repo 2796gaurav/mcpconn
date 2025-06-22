@@ -1,6 +1,6 @@
 # mcpconn: The Missing Connector for AI
 
-**mcpconn** is a Python library that provides a simple and efficient way to connect your applications to AI models using the Multi-purpose Cooperative Protocol (MCP). It acts as a wrapper around the `mcp` library, offering a streamlined client interface for seamless integration with various AI providers and transport protocols.
+**mcpconn** is a Python library that provides a simple and efficient way to connect your applications to AI models using the Model Context Protocol (MCP). It acts as a wrapper around the `mcp` library, offering a streamlined client interface for seamless integration with various AI providers and transport protocols.
 
 [![PyPI version](https://badge.fury.io/py/mcpconn.svg)](https://badge.fury.io/py/mcpconn)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -27,8 +27,8 @@
 ## ✨ Features
 
 - **Simplified Client Interface**: A high-level `MCPClient` for easy interaction with MCP servers.
-- **Multi-provider Support**: Out-of-the-box support for Anthropic and OpenAI models.
-- **Flexible Transports**: Connect to servers using STDIO, SSE, or Streamable HTTP.
+- **Multi-provider Support**: Out-of-the-box support for Anthropic and OpenAI models. **Note:** OpenAI only supports remote MCP endpoints (not local/stdio/localhost). See: https://platform.openai.com/docs/guides/tools-remote-mcp
+- **Flexible Transports**: Connect to servers using STDIO, SSE, or Streamable HTTP. **OpenAI only supports remote MCP endpoints.**
 - **Built-in Guardrails**: Protect your application with content filtering, PII masking, and injection detection.
 - **Conversation Management**: Easily manage conversation history, context, and persistence.
 - **Asynchronous by Design**: Built with `asyncio` for high-performance, non-blocking I/O.
@@ -51,9 +51,17 @@ import asyncio
 from mcpconn import MCPClient
 
 async def main():
-    # Connect to a local server using STDIO
+    # Connect to a local server using STDIO (Anthropic only)
     client = MCPClient(llm_provider="anthropic")
     await client.connect("python examples/simple_server/weather_stdio.py")
+
+    # ---
+    # OpenAI usage example (remote MCP only):
+    # client = MCPClient(llm_provider="openai")
+    # await client.connect("https://mcp.deepwiki.com/mcp", transport="streamable_http")
+    # ---
+
+    # Note: OpenAI does NOT support local/stdio/localhost servers. See: https://platform.openai.com/docs/guides/tools-remote-mcp
 
     # Start a conversation
     conversation_id = client.start_conversation()

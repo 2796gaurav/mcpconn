@@ -21,13 +21,13 @@ import asyncio
 from mcpconn import MCPClient
 
 async def main():
-    # Connect to a local server using STDIO
-    client = MCPClient(llm_provider="anthropic")
-    await client.connect("python examples/simple_server/weather_stdio.py")
+    # Set your OpenAI API key in the environment before running
+    # export OPENAI_API_KEY="your-key-here"
 
-    # Start a conversation
-    conversation_id = client.start_conversation()
-    print(f"Started conversation: {conversation_id}")
+    # Connect to a remote MCP server using OpenAI and streamable_http transport
+    # NOTE: OpenAI only supports remote MCP endpoints (not local/stdio/localhost). See: https://platform.openai.com/docs/guides/tools-remote-mcp
+    client = MCPClient(llm_provider="openai")
+    await client.connect("https://mcp.deepwiki.com/mcp", transport="streamable_http")
 
     # Send a message and get a response
     response = await client.query("Hello, world!")
@@ -40,12 +40,12 @@ if __name__ == "__main__":
     asyncio.run(main())
 ```
 
-This example demonstrates the basic workflow:
+_Note: Set your OpenAI API key in the environment before running the example (e.g., `export OPENAI_API_KEY="your-key-here"`)._
 
-1.  **Import `mcpconn`**: The main entry point for interacting with the library.
-2.  **Instantiate the client**: Create an instance of `mcpconn`, specifying the desired LLM provider.
-3.  **Connect to a server**: Use `await client.connect()` to establish a connection.
-4.  **Interact with the AI**: Use methods like `start_conversation()` and `query()` to have a conversation.
-5.  **Disconnect**: Cleanly close the connection with `await client.disconnect()`.
+**Warning:** OpenAI provider only supports remote MCP endpoints. Local/STDIO/localhost servers are not supported. See: https://platform.openai.com/docs/guides/tools-remote-mcp
+
+_This is the easiest way to get started: just connect to a remote MCP server using OpenAI and streamable_http transport._
+
+_Note: For Python scripts, do **not** include the 'python' prefix in the connection string; it is added automatically by mcpconn._
 
 For more detailed examples, please refer to the `examples` directory in the [project repository](https://github.com/2796gaurav/mcpconn). 

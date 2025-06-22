@@ -22,6 +22,7 @@ from mclpclient import mcpconn
 from mcpconn.guardrails import PIIGuardrail, WordMaskGuardrail, InjectionGuardrail
 
 async def main():
+    # NOTE: OpenAI only supports remote MCP endpoints (not local/stdio/localhost). See: https://platform.openai.com/docs/guides/tools-remote-mcp
     client = mcpconn(llm_provider="openai")
     
     # Add a guardrail to detect and mask PII
@@ -85,4 +86,33 @@ Blocks a response entirely if it contains certain words and replaces it with a s
 ### `InjectionGuardrail`
 Detects common patterns associated with injection attacks.
 - **Finds**: Cross-Site Scripting (XSS), SQL injection, shell injection, and path traversal patterns.
-- **Action**: Fails the check if a potential attack is detected. Does not mask content by default, as the entire input should likely be rejected. 
+- **Action**: Fails the check if a potential attack is detected. Does not mask content by default, as the entire input should likely be rejected.
+
+## Where Are Guardrails Enforced?
+
+Guardrails in `mcpconn` are enforced **on the client side**. This means:
+- You can add, configure, and manage guardrails in your client code.
+- The server (including remote MCP servers like OpenAI or Anthropic endpoints) does **not** enforce guardrails or content filtering by default.
+- This is a feature: guardrails are designed to empower each client to control its own content filtering and safety, rather than enforcing a global policy on the server.
+
+### OpenAI and Remote MCP Servers
+
+When using a remote MCP server (such as OpenAI via `https://mcp.deepwiki.com/mcp`), guardrails in your client will only filter tool results (if any). **They do not filter or block the LLM's direct output.**
+
+**Warning:** OpenAI provider only supports remote MCP endpoints. Local/STDIO/localhost servers are not supported. See: https://platform.openai.com/docs/guides/tools-remote-mcp
+
+If you want to apply guardrails to the LLM's output, you can manually check the response after calling `client.query()`:
+
+```python
+response = await client.query(user_input)
+# Manually check LLM output with guardrails
+results = await client.guardrails.check_all(response)
+for result in results:
+    if not result.passed and result.masked_content:
+        response = result.masked_content
+print(response)
+```
+
+This approach allows you to enforce guardrails on any LLM output, regardless of provider or transport.
+
+_This design allows each client to choose its own safety and filtering policies, rather than relying on the server to enforce them._ 
