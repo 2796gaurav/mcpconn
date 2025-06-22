@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://2796gaurav.github.io/plug_mcp/</loc>
-         <lastmod>2025-06-21</lastmod>
+         <loc>https://2796gaurav.github.io/mcpconn/</loc>
+         <lastmod>2025-06-22</lastmod>
     </url>
     <url>
-         <loc>https://2796gaurav.github.io/plug_mcp/api-reference/</loc>
-         <lastmod>2025-06-21</lastmod>
+         <loc>https://2796gaurav.github.io/mcpconn/api-reference/</loc>
+         <lastmod>2025-06-22</lastmod>
     </url>
     <url>
-         <loc>https://2796gaurav.github.io/plug_mcp/code-of-conduct/</loc>
-         <lastmod>2025-06-21</lastmod>
+         <loc>https://2796gaurav.github.io/mcpconn/code-of-conduct/</loc>
+         <lastmod>2025-06-22</lastmod>
     </url>
     <url>
-         <loc>https://2796gaurav.github.io/plug_mcp/getting-started/</loc>
-         <lastmod>2025-06-21</lastmod>
+         <loc>https://2796gaurav.github.io/mcpconn/core-concepts/</loc>
+         <lastmod>2025-06-22</lastmod>
     </url>
     <url>
-         <loc>https://2796gaurav.github.io/plug_mcp/license/</loc>
-         <lastmod>2025-06-21</lastmod>
+         <loc>https://2796gaurav.github.io/mcpconn/getting-started/</loc>
+         <lastmod>2025-06-22</lastmod>
+    </url>
+    <url>
+         <loc>https://2796gaurav.github.io/mcpconn/guardrails/</loc>
+         <lastmod>2025-06-22</lastmod>
+    </url>
+    <url>
+         <loc>https://2796gaurav.github.io/mcpconn/license/</loc>
+         <lastmod>2025-06-22</lastmod>
     </url>
 </urlset>
