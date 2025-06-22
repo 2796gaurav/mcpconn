@@ -43,6 +43,17 @@ The Simple Client demonstrates:
 ### Utility Examples
 - `weather.py` - Weather tool implementation example
 
+### Simple Client Examples
+- `simple_client.py` - Basic usage of MCPClient for all protocols and LLMs
+- `simple_client_with_conversation_id.py` - Conversation ID and history management
+- `simple_client_with_guardrails.py` - Content filtering and safety features
+- `run_client_example.sh` - Shell script to run client examples
+
+### Server Examples
+- `weather_stdio.py` - Simple weather MCP server (STDIO)
+- `sse_mcp_example_server.py` - SSE-based MCP server
+- `streamable_http_server.py` - Streamable HTTP server example
+
 ## 🎯 Getting Started
 
 1. **For beginners**: Start with the [Simple Client](simple_client/) to understand basic usage

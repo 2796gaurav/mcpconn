@@ -5,6 +5,8 @@
 [![PyPI version](https://badge.fury.io/py/mcpconn.svg)](https://badge.fury.io/py/mcpconn)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Documentation](https://img.shields.io/badge/Documentation-blue.svg)](https://2796gaurav.github.io/mcpconn)
+[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
+[![Tests](https://github.com/2796gaurav/mcpconn/workflows/Python%20Tests/badge.svg)](https://github.com/2796gaurav/mcpconn/actions)
 
 ## Table of Contents
 
@@ -53,7 +55,7 @@ from mcpconn import MCPClient
 async def main():
     # Connect to a local server using STDIO
     client = MCPClient(llm_provider="anthropic")
-    await client.connect("python examples/simple_server/main.py")
+    await client.connect("python examples/simple_server/weather_stdio.py")
 
     # Start a conversation
     conversation_id = client.start_conversation()
@@ -125,7 +127,7 @@ If you have questions or need help, please open an issue in the [issue tracker](
 
 `mcpconn` is tested and supported on the following Python versions:
 
-- Python 3.8
 - Python 3.9
 - Python 3.10
-- Python 3.11 
+- Python 3.11
+- Python 3.12 

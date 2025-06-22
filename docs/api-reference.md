@@ -6,7 +6,7 @@ This page provides a reference for the `mcpconn` library's public API.
 
 The `mcpconn` is the main entry point for interacting with MCP servers.
 
-::: mclpclient.mcpconn
+::: mcpconn.MCPClient
     options:
       show_root_heading: true
       show_source: false

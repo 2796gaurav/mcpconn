@@ -177,6 +177,19 @@ class GuardrailManager:
         tasks = [guardrail.check(content) for guardrail in self.guardrails]
         results = await asyncio.gather(*tasks)
 
+        # Check if any ResponseBlockGuardrail failed first (highest priority)
+        response_block_result = None
+        for i, result in enumerate(results):
+            if not result.passed and isinstance(self.guardrails[i], ResponseBlockGuardrail):
+                response_block_result = result
+                break
+
+        # If ResponseBlockGuardrail failed, use its standardized response
+        if response_block_result:
+            for result in results:
+                result.masked_content = response_block_result.masked_content
+            return results
+
         # Apply masking in sequence if multiple guardrails mask content
         masked_content = content
         for result in results:

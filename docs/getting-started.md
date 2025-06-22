@@ -18,12 +18,12 @@ Here's a simple example of how to use `mcpconn` to connect to an MCP server and 
 
 ```python
 import asyncio
-from mclpclient import mcpconn
+from mcpconn import MCPClient
 
 async def main():
     # Connect to a local server using STDIO
-    client = mcpconn(llm_provider="anthropic")
-    await client.connect("python examples/simple_server/main.py")
+    client = MCPClient(llm_provider="anthropic")
+    await client.connect("python examples/simple_server/weather_stdio.py")
 
     # Start a conversation
     conversation_id = client.start_conversation()

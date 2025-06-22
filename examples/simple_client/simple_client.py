@@ -10,10 +10,15 @@ import argparse
 import sys
 import os
 
-# Add parent directory to path to import mcpconn
+# # Add parent directory to path to import mcpconn # Only for dev
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-from mcpconn import mcpconn
+
+# Set API keys
+# os.environ['ANTHROPIC_API_KEY'] = 'xxx'
+# os.environ['OPENAI_API_KEY'] = 'xxx'
+
+from mcpconn import MCPClient
 
 
 async def main():
@@ -29,7 +34,7 @@ async def main():
     args = parser.parse_args()
 
     # Create client
-    client = mcpconn(
+    client = MCPClient(
         llm_provider=args.provider, model=args.model, timeout=30.0, ssl_verify=False
     )
 

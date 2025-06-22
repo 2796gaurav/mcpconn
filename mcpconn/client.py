@@ -20,7 +20,7 @@ from .guardrails import (
 logger = logging.getLogger(__name__)
 
 
-class mcpconn:
+class MCPClient:
     """Simplified MCP client."""
 
     def __init__(
@@ -125,7 +125,7 @@ class mcpconn:
         # Handle OpenAI provider differently
         if isinstance(self.llm, OpenAIProvider):
             if transport == "stdio":
-                raise ValueError("OpenAI provider doesn't support STDIO transport")
+                raise ValueError("OpenAI provider doesn't support STDIO transport. Read more about here: https://platform.openai.com/docs/guides/tools-remote-mcp")
 
             server_label = kwargs.get("server_label", "default_server")
             self.llm.add_mcp_server(connection_string, server_label, **kwargs)
@@ -175,13 +175,7 @@ class mcpconn:
                 f"Generated unique conversation ID for independent message: {self.get_conversation_id()}"
             )
 
-        # Run guardrails on input message
-        guardrail_results = await self.guardrails.check_all(message)
-        for result in guardrail_results:
-            if not result.passed:
-                logger.warning(f"Guardrail check failed: {result.message}")
-                if result.masked_content:
-                    message = result.masked_content
+        # DO NOT run guardrails on input message
 
         # OpenAI provider handling
         if isinstance(self.llm, OpenAIProvider):
@@ -206,16 +200,7 @@ class mcpconn:
                 content[0].get("text", "No response") if content else "No response"
             )
 
-            # Run guardrails on response
-            guardrail_results = await self.guardrails.check_all(response_text)
-            for result in guardrail_results:
-                if not result.passed:
-                    logger.warning(
-                        f"Guardrail check failed on response: {result.message}"
-                    )
-                    if result.masked_content:
-                        response_text = result.masked_content
-
+            # DO NOT run guardrails on LLM completions
             return response_text
 
         # Anthropic provider handling
@@ -231,19 +216,10 @@ class mcpconn:
                 self.timeout,
             )
 
-            # Extract text content and apply guardrails
+            # Extract text content (no guardrails on LLM completions)
             text_content = []
             for item in response["content"]:
                 if item.get("type") == "text":
-                    # Apply guardrails to each text segment
-                    guardrail_results = await self.guardrails.check_all(item["text"])
-                    for result in guardrail_results:
-                        if not result.passed:
-                            logger.warning(
-                                f"Guardrail check failed on response segment: {result.message}"
-                            )
-                            if result.masked_content:
-                                item["text"] = result.masked_content
                     text_content.append(item["text"])
 
             messages.append({"role": "assistant", "content": response["content"]})
@@ -264,7 +240,7 @@ class mcpconn:
                         self.session.call_tool(tool_call["name"], tool_call["input"]),
                         self.timeout,
                     )
-                    # Apply guardrails to tool results
+                    # Apply guardrails to tool results ONLY
                     guardrail_results = await self.guardrails.check_all(result.content)
                     masked_content = result.content
                     for guardrail_result in guardrail_results:
