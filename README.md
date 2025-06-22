@@ -6,6 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Documentation](https://img.shields.io/badge/Documentation-blue.svg)](https://2796gaurav.github.io/mcpconn)
 [![Tests](https://github.com/2796gaurav/mcpconn/workflows/Python%20Tests/badge.svg)](https://github.com/2796gaurav/mcpconn/actions)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1a3mrcuX7VeDljXxec0s_JRUw1fdKf6YW?usp=sharing)
 
 ## Table of Contents
 
@@ -77,7 +78,7 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 
----
+## 🧑‍💻 Examples
 
 ### 🟢 Run in Google Colab
 
@@ -144,4 +145,4 @@ Have you built something cool with `mcpconn`? Written an article or created a vi
 
 ## 💬 Support
 
-If you have questions or need help, please open an issue in the [issue tracker](https://github.com/2796gaurav/mcpconn/issues). 
+If you have questions or need help, please open an issue in the [issue tracker](https://github.com/2796gaurav/mcpconn/issues).
