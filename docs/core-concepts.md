@@ -4,7 +4,7 @@ This page explains the key concepts behind `mcpconn` and the protocol it is buil
 
 ## The Multi-purpose Cooperative Protocol (MCP)
 
-At its heart, `mcpconn` is designed to simplify interactions with servers that use the **Multi-purpose Cooperative Protocol (MCP)**. MCP is a standardized protocol that creates a common ground for different AI models (like those from Anthropic or OpenAI) and the applications that use them.
+At its heart, `mcpconn` is designed to simplify interactions with servers that use the **Model Context Protocol (MCP)**. MCP is a standardized protocol that creates a common ground for different AI models (like those from Anthropic or OpenAI) and the applications that use them.
 
 Think of it as a universal adapter for AI. Instead of writing custom code to handle the specific API of each AI provider, you can connect to an MCP-compliant server that handles those details for you.
 
