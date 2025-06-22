@@ -53,7 +53,7 @@ class TransportManager:
             raise ValueError(f"Invalid server path: {server_path}")
 
         command, args = get_server_command(server_path)
-        logger.info(f"Starting STDIO server: {command} {' '.join(args)}", extra={"transport": "stdio", "command": command, "args": args})
+        logger.info(f"Starting STDIO server: {command} {' '.join(args)}", extra={"transport": "stdio", "command": command, "server_args": args})
 
         server_params = StdioServerParameters(command=command, args=args, env=None)
         read_stream, write_stream = await run_with_timeout(

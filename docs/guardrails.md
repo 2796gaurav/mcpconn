@@ -1,62 +1,42 @@
 # Using Guardrails
 
-`mcpconn` comes with a powerful, built-in guardrail system to help you secure your application and moderate content. Guardrails can inspect both user input before it's sent to the AI and the AI's response before it's sent to the user.
+`mcpconn` comes with a powerful, built-in guardrail system to help you secure your application and moderate content. Guardrails can inspect tool results automatically, and you can also manually apply them to user input or LLM output if desired.
 
 ## How it Works
 
-The `mcpconn` has a `GuardrailManager` that can hold multiple guardrails. You can add any of the built-in guardrails or even create your own.
+The `mcpconn` client has a `GuardrailManager` that can hold multiple guardrails. You can add any of the built-in guardrails or even create your own.
 
 When you call `client.query()`, the following happens:
-1. The user's message is checked against all registered guardrails.
-2. If a guardrail detects an issue and provides masked content (e.g., `[REDACTED]`), the message is sanitized before being sent to the AI.
-3. After the AI responds, its message is also checked against all guardrails.
-4. If the response is flagged, it can be masked or blocked entirely before being returned to your application.
+1. The user's message is sent directly to the LLM (**no guardrails are applied automatically to user input**).
+2. If the LLM calls a tool, the tool's result is checked against all registered guardrails before being returned to the user (**guardrails are automatically applied to tool results**).
+3. The LLM's direct output (text) is **not** automatically checked by guardrails. If you want to filter or mask LLM output, you must do so manually after receiving the response.
 
-## Example Usage
-
-Here is a complete example of how to add and use multiple guardrails.
+## Basic Example: Manually Applying Guardrails to LLM Output
 
 ```python
 import asyncio
-from mclpclient import mcpconn
-from mcpconn.guardrails import PIIGuardrail, WordMaskGuardrail, InjectionGuardrail
+from mcpconn import MCPClient
+from mcpconn.guardrails import PIIGuardrail, WordMaskGuardrail
 
 async def main():
-    # NOTE: OpenAI only supports remote MCP endpoints (not local/stdio/localhost). See: https://platform.openai.com/docs/guides/tools-remote-mcp
-    client = mcpconn(llm_provider="openai")
-    
-    # Add a guardrail to detect and mask PII
+    client = MCPClient(llm_provider="anthropic")
     client.add_guardrail(PIIGuardrail(name="pii_detector"))
+    client.add_guardrail(WordMaskGuardrail(name="word_mask", words_to_mask=["secret"], replacement="[CENSORED]"))
 
-    # Add a guardrail to block specific sensitive words
-    client.add_guardrail(WordMaskGuardrail(
-        name="word_mask",
-        words_to_mask=["secret", "confidential"],
-        replacement="[CENSORED]"
-    ))
+    await client.connect("your_server_here", transport="stdio")
 
-    # Add a guardrail to detect common injection attacks
-    client.add_guardrail(InjectionGuardrail(name="injection_detector"))
+    user_input = "what is the weather alert in texas."
+    # Send to LLM (no guardrails applied automatically)
+    response = await client.query(user_input)
 
-    # This message contains PII and a masked word
-    user_message = "Hi, my name is John Doe and my email is john.doe@example.com. This is a secret."
-    print(f"Original message: {user_message}")
-
-    # The client will automatically apply the guardrails
-    # NOTE: For this example, we aren't connecting to a real server
-    # We are demonstrating the guardrail check on the input message
-    
-    guardrail_results = await client.guardrails.check_all(user_message)
-    
-    final_message = user_message
+    # If you want to apply guardrails to the LLM output, do it manually:
+    guardrail_results = await client.guardrails.check_all(response)
     for result in guardrail_results:
-        if not result.passed:
-            print(f"Guardrail '{result.message}' failed.")
-            if result.masked_content:
-                final_message = result.masked_content
+        if not result.passed and result.masked_content:
+            response = result.masked_content
 
-    print(f"Sanitized message: {final_message}")
-
+    print("Sanitized response:", response)
+    await client.disconnect()
 
 if __name__ == "__main__":
     asyncio.run(main())
@@ -93,7 +73,7 @@ Detects common patterns associated with injection attacks.
 Guardrails in `mcpconn` are enforced **on the client side**. This means:
 - You can add, configure, and manage guardrails in your client code.
 - The server (including remote MCP servers like OpenAI or Anthropic endpoints) does **not** enforce guardrails or content filtering by default.
-- This is a feature: guardrails are designed to empower each client to control its own content filtering and safety, rather than enforcing a global policy on the server.
+- Guardrails are **automatically applied only to tool results**. LLM output and user input are not filtered unless you do so manually.
 
 ### OpenAI and Remote MCP Servers
 
@@ -115,4 +95,10 @@ print(response)
 
 This approach allows you to enforce guardrails on any LLM output, regardless of provider or transport.
 
-_This design allows each client to choose its own safety and filtering policies, rather than relying on the server to enforce them._ 
+_This design allows each client to choose its own safety and filtering policies, rather than relying on the server to enforce them._
+
+---
+
+## Advanced Example: Guardrails with Tool Results and Chat Loop
+
+See `examples/simple_client/simple_client_with_guardrails.py` in the repository for a more advanced example that demonstrates enabling and testing all guardrail types, including a chat loop and tool result filtering. 

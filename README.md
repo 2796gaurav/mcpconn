@@ -68,7 +68,7 @@ async def main():
     print(f"Started conversation: {conversation_id}")
 
     # Send a message and get a response
-    response = await client.query("Hello, world!")
+    response = await client.query("give me list of tools provided")
     print(f"AI: {response}")
 
     # Disconnect from the server
@@ -76,7 +76,30 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-```
+
+---
+
+### 🟢 Run in Google Colab
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1a3mrcuX7VeDljXxec0s_JRUw1fdKf6YW?usp=sharing)
+
+You can try `mcpconn` directly in your browser using our interactive [Google Colab notebook](https://colab.research.google.com/drive/1a3mrcuX7VeDljXxec0s_JRUw1fdKf6YW?usp=sharing). This notebook demonstrates:
+
+- Installing `mcpconn` and dependencies in Colab
+- Setting up your OpenAI API key using Colab's Secrets
+- Making basic queries to OpenAI models via MCP
+- Managing conversation state for contextual chat
+- Using built-in guardrails for safety
+
+**Colab Usage Tips:**
+- Install dependencies with:
+  ```python
+  !pip install mcpconn openai nest_asyncio
+  ```
+- Set your OpenAI API key using the Colab sidebar (🔑 icon → add `OPENAI_API_KEY` as a secret).
+- The notebook is ready to run cell-by-cell, with code and explanations for each step.
+
+---
 
 ## 📚 Documentation
 
