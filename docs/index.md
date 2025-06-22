@@ -1,3 +1,5 @@
+![mcpconn logo](images/logo.png)
+
 # Welcome to mcpconn
 
 **mcpconn** is a Python library that provides a simple and efficient way to connect your applications to AI models using the Model Context Protocol (MCP). It acts as a wrapper around the `mcp` library, offering a streamlined client interface for seamless integration with various AI providers and transport protocols.
