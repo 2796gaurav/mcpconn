@@ -5,7 +5,6 @@
 [![PyPI version](https://badge.fury.io/py/mcpconn.svg)](https://badge.fury.io/py/mcpconn)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Documentation](https://img.shields.io/badge/Documentation-blue.svg)](https://2796gaurav.github.io/mcpconn)
-[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![Tests](https://github.com/2796gaurav/mcpconn/workflows/Python%20Tests/badge.svg)](https://github.com/2796gaurav/mcpconn/actions)
 
 ## Table of Contents
@@ -24,7 +23,6 @@
   - [🛡️ Security](#️-security)
   - [🌟 Showcase](#-showcase)
   - [💬 Support](#-support)
-  - [🐍 Supported Python Versions](#-supported-python-versions)
 
 ## ✨ Features
 
@@ -121,13 +119,4 @@ Have you built something cool with `mcpconn`? Written an article or created a vi
 
 ## 💬 Support
 
-If you have questions or need help, please open an issue in the [issue tracker](https://github.com/2796gaurav/mcpconn/issues).
-
-## 🐍 Supported Python Versions
-
-`mcpconn` is tested and supported on the following Python versions:
-
-- Python 3.9
-- Python 3.10
-- Python 3.11
-- Python 3.12 
+If you have questions or need help, please open an issue in the [issue tracker](https://github.com/2796gaurav/mcpconn/issues). 
