@@ -55,7 +55,6 @@ markdown_extensions:
 nav:
   - Home: index.md
   - 'Getting Started': 'getting-started.md'
-  - 'Example Servers': 'getting-started.md'
   - 'Core Concepts': 'core-concepts.md'
   - 'Using Guardrails': 'guardrails.md'
   - 'API Reference': 'api-reference.md'
