@@ -53,7 +53,7 @@ class TransportManager:
             raise ValueError(f"Invalid server path: {server_path}")
 
         command, args = get_server_command(server_path)
-        logger.info(f"Starting STDIO server: {command} {' '.join(args)}")
+        logger.info(f"Starting STDIO server: {command} {' '.join(args)}", extra={"transport": "stdio", "command": command, "args": args})
 
         server_params = StdioServerParameters(command=command, args=args, env=None)
         read_stream, write_stream = await run_with_timeout(
@@ -67,7 +67,7 @@ class TransportManager:
 
         await run_with_timeout(session.initialize(), self.timeout)
         self._transport_type = "stdio"
-        logger.info(f"STDIO connection established: {server_path}")
+        logger.info(f"STDIO connection established: {server_path}", extra={"transport": "stdio", "server_path": server_path})
         return session
 
     async def _connect_sse(self, server_url, headers=None):
@@ -76,7 +76,7 @@ class TransportManager:
         if not parsed.scheme or not parsed.netloc:
             raise ValueError(f"Invalid SSE URL: {server_url}")
 
-        logger.info(f"Connecting to SSE server: {server_url}")
+        logger.info(f"Connecting to SSE server: {server_url}", extra={"transport": "sse", "server_url": server_url})
 
         read_stream, write_stream = await run_with_timeout(
             self.exit_stack.enter_async_context(
@@ -91,7 +91,7 @@ class TransportManager:
 
         await run_with_timeout(session.initialize(), min(15.0, self.timeout))
         self._transport_type = "sse"
-        logger.info(f"SSE connection established: {server_url}")
+        logger.info(f"SSE connection established: {server_url}", extra={"transport": "sse", "server_url": server_url})
         return session
 
     async def _connect_streamable_http(self, server_url, headers=None):
@@ -100,7 +100,7 @@ class TransportManager:
         if not parsed.scheme or not parsed.netloc:
             raise ValueError(f"Invalid HTTP URL: {server_url}")
 
-        logger.info(f"Connecting to HTTP server: {server_url}")
+        logger.info(f"Connecting to HTTP server: {server_url}", extra={"transport": "streamable_http", "server_url": server_url})
 
         read_stream, write_stream, metadata = await run_with_timeout(
             self.exit_stack.enter_async_context(
@@ -115,7 +115,7 @@ class TransportManager:
 
         await run_with_timeout(session.initialize(), min(15.0, self.timeout))
         self._transport_type = "streamable_http"
-        logger.info(f"HTTP connection established: {server_url}")
+        logger.info(f"HTTP connection established: {server_url}", extra={"transport": "streamable_http", "server_url": server_url})
         return session
 
     def get_type(self):

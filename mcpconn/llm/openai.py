@@ -36,7 +36,6 @@ class OpenAIProvider:
             self._previous_response_id = None
             self.message_history = []
 
-        logger.info(f"Started conversation: {self.conversation_id}")
         return self.conversation_id
 
     def get_conversation_id(self) -> Optional[str]:
@@ -49,7 +48,7 @@ class OpenAIProvider:
             self.start_conversation()
 
         self.message_history.append({"role": role, "content": content})
-        logger.debug(f"Added {role} message to conversation {self.conversation_id}")
+        logger.debug(f"Added {role} message to conversation {self.conversation_id}", extra={"conversation_id": self.conversation_id, "role": role})
 
     def get_history(self) -> List[Dict[str, Any]]:
         """Get conversation history."""
@@ -59,7 +58,7 @@ class OpenAIProvider:
         """Clear conversation history."""
         self.message_history = []
         self._previous_response_id = None
-        logger.info(f"Cleared history for conversation: {self.conversation_id}")
+        logger.info(f"Cleared history for conversation: {self.conversation_id}", extra={"conversation_id": self.conversation_id})
 
     def add_mcp_server(
         self,
@@ -130,9 +129,6 @@ class OpenAIProvider:
                 # Generate unique ID for this message (treat as independent conversation)
                 self.start_conversation()
                 use_history = False
-                logger.info(
-                    f"Generated unique conversation ID for independent message: {self.conversation_id}"
-                )
 
             # Extract user input if not provided
             if user_input is None:
@@ -247,7 +243,7 @@ class OpenAIProvider:
             }
 
         except Exception as e:
-            logger.error(f"OpenAI API error: {e}")
+            logger.error(f"OpenAI API error: {e}", extra={"exception": str(e), "conversation_id": self.conversation_id})
             raise RuntimeError(f"OpenAI API error: {e}")
 
     async def handle_approval(self, approval_request_id, approve=True):
@@ -313,14 +309,14 @@ class OpenAIProvider:
             }
 
         except Exception as e:
-            logger.error(f"OpenAI approval error: {e}")
+            logger.error(f"OpenAI approval error: {e}", extra={"exception": str(e), "conversation_id": self.conversation_id})
             raise RuntimeError(f"OpenAI approval error: {e}")
 
     def clear_mcp_servers(self):
         """Clear all MCP servers."""
         self._mcp_servers = []
         self._previous_response_id = None
-        logger.info("Cleared all MCP servers")
+        logger.info("Cleared all MCP servers", extra={})
 
     def export_conversation(self) -> Dict[str, Any]:
         """Export conversation data for persistence."""
@@ -337,9 +333,9 @@ class OpenAIProvider:
         self.message_history = conversation_data.get("message_history", [])
         self.model = conversation_data.get("model", self.model)
         self._previous_response_id = conversation_data.get("previous_response_id")
-        logger.info(f"Imported conversation: {self.conversation_id}")
+        logger.info(f"Imported conversation: {self.conversation_id}", extra={"conversation_id": self.conversation_id})
 
     def set_auto_generate_conversation_ids(self, enabled: bool):
         """Enable or disable automatic conversation ID generation."""
         self.auto_generate_conversation_ids = enabled
-        logger.info(f"Auto-generate conversation IDs: {enabled}")
+        logger.info(f"Auto-generate conversation IDs: {enabled}", extra={"auto_generate_conversation_ids": enabled})

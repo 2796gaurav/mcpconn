@@ -53,7 +53,7 @@ from mcpconn import MCPClient
 async def main():
     # Connect to a local server using STDIO (Anthropic only)
     client = MCPClient(llm_provider="anthropic")
-    await client.connect("python examples/simple_server/weather_stdio.py")
+    await client.connect("examples/simple_server/weather_stdio.py")
 
     # ---
     # OpenAI usage example (remote MCP only):
@@ -81,12 +81,6 @@ if __name__ == "__main__":
 ## 📚 Documentation
 
 For full details on all features and the complete API reference, please visit our **[documentation site](https://2796gaurav.github.io/mcpconn)**.
-
-The documentation is automatically generated from the `main` branch and includes:
-
-- A full **Getting Started** guide.
-- In-depth **tutorials and examples**.
-- The complete **API Reference**.
 
 ## 🗺️ Roadmap
 

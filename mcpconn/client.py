@@ -68,7 +68,6 @@ class MCPClient:
     def start_conversation(self, conversation_id: Optional[str] = None) -> str:
         """Start a new conversation or continue existing one."""
         self.conversation_id = self.llm.start_conversation(conversation_id)
-        logger.info(f"Started conversation: {self.conversation_id}")
         return self.conversation_id
 
     def get_conversation_id(self) -> Optional[str]:
@@ -164,7 +163,7 @@ class MCPClient:
                 ]
                 logger.info(f"Loaded {len(self._tools_cache)} tools")
         except Exception as e:
-            logger.error(f"Failed to refresh tools: {e}")
+            logger.error(f"Failed to refresh tools: {e}", extra={"exception": str(e)})
             self._tools_cache = []
 
     async def query(
@@ -181,9 +180,6 @@ class MCPClient:
         elif not self.get_conversation_id() and self.auto_generate_ids:
             # No conversation ID and auto-generation enabled - generate unique ID for this message
             self.start_conversation()
-            logger.info(
-                f"Generated unique conversation ID for independent message: {self.get_conversation_id()}"
-            )
 
         # DO NOT run guardrails on input message
 
@@ -250,15 +246,29 @@ class MCPClient:
                         self.session.call_tool(tool_call["name"], tool_call["input"]),
                         self.timeout,
                     )
+                    # Always pass a string to guardrails
+                    content_for_guardrails = result.content
+                    if isinstance(content_for_guardrails, list):
+                        content_for_guardrails = " ".join(
+                            getattr(item, "text", str(item)) for item in content_for_guardrails
+                        )
                     # Apply guardrails to tool results ONLY
-                    guardrail_results = await self.guardrails.check_all(result.content)
+                    guardrail_results = await self.guardrails.check_all(content_for_guardrails)
+                    for guardrail_result in guardrail_results:
+                        if not guardrail_result.passed:
+                            logger.info(
+                                "Guardrail triggered in client.",
+                                extra={"guardrail": type(guardrail_result).__name__, "triggered": True}
+                            )
                     masked_content = result.content
                     for guardrail_result in guardrail_results:
-                        if (
-                            not guardrail_result.passed
-                            and guardrail_result.masked_content
-                        ):
+                        # Only log if the response is actually masked/blocked
+                        if not guardrail_result.passed and guardrail_result.masked_content:
                             masked_content = guardrail_result.masked_content
+                            logger.info(
+                                "Guardrail triggered in client and response was masked/blocked.",
+                                extra={"guardrail": type(guardrail_result).__name__, "triggered": True}
+                            )
 
                     tool_results.append(
                         {
@@ -311,13 +321,15 @@ class MCPClient:
         if isinstance(self.llm, OpenAIProvider):
             self.llm.clear_mcp_servers()
         else:
-            await self.exit_stack.aclose()
+            try:
+                await self.exit_stack.aclose()
+            except (asyncio.CancelledError, RuntimeError):
+                pass  # Suppress disconnect errors silently
             self.exit_stack = AsyncExitStack()
             self.transport = TransportManager(self.exit_stack, self.timeout)
 
         self._connected = False
         self._tools_cache = []
-        logger.info("Disconnected")
 
     async def __aenter__(self):
         return self

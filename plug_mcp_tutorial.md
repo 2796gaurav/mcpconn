@@ -63,7 +63,7 @@ from mclpclient import mcpconn
 async def main():
     # Connect to a local server using STDIO
     client = mcpconn(llm_provider="anthropic")
-    await client.connect("python examples/simple_server/main.py")
+    await client.connect("examples/simple_server/main.py")
 
     # Start a conversation
     conversation_id = client.start_conversation()
@@ -125,7 +125,7 @@ client.load_conversation("my_convo.json")
 **Solution:**
 ```python
 # Local testing
-await client.connect("python examples/simple_server/main.py", transport="stdio")
+await client.connect("examples/simple_server/main.py", transport="stdio")
 # Production
 await client.connect("https://my-ai-server.com/api", transport="http")
 ```
@@ -140,7 +140,7 @@ from mclpclient import mcpconn
 
 async def ask_ai(message):
     client = mcpconn(llm_provider="anthropic")
-    await client.connect("python examples/simple_server/main.py")
+    await client.connect("examples/simple_server/main.py")
     await client.start_conversation()
     response = await client.query(message)
     await client.disconnect()

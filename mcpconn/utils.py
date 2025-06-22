@@ -55,3 +55,41 @@ def format_tool_for_llm(tool):
         "description": tool.description,
         "input_schema": tool.inputSchema,
     }
+
+
+def setup_logging(level: int = None, json_format: bool = True):
+    """
+    Set up structured logging for the mcpconn package.
+    Args:
+        level (int): Logging level (default: logging.INFO)
+        json_format (bool): Use JSON formatter if True, else key-value pairs.
+    """
+    import logging
+    import sys
+    level = level or int(os.environ.get("LOGLEVEL", logging.INFO))
+    root_logger = logging.getLogger()
+    root_logger.setLevel(level)
+    handler = logging.StreamHandler(sys.stdout)
+    if json_format:
+        try:
+            from pythonjsonlogger import jsonlogger
+            formatter = jsonlogger.JsonFormatter()
+        except ImportError:
+            formatter = logging.Formatter(
+                fmt="%(asctime)s %(levelname)s %(name)s %(message)s %(extra)s"
+            )
+    else:
+        formatter = logging.Formatter(
+            fmt="%(asctime)s %(levelname)s %(name)s %(message)s %(extra)s"
+        )
+    handler.setFormatter(formatter)
+    if not root_logger.handlers:
+        root_logger.addHandler(handler)
+    else:
+        root_logger.handlers[0] = handler
+
+    # Suppress noisy logs from common HTTP/AI libraries
+    for noisy_logger in [
+        "httpx", "openai", "anthropic", "urllib3", "requests"
+    ]:
+        logging.getLogger(noisy_logger).setLevel(logging.WARNING)

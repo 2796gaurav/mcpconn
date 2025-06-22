@@ -38,21 +38,30 @@ class WordMaskGuardrail(BaseGuardrail):
         super().__init__(name)
         self.words_to_mask = words_to_mask
         self.replacement = replacement
-        # Fix: Use word boundaries that work with case-insensitive matching
-        pattern_parts = []
-        for word in words_to_mask:
-            # Escape special regex characters in the word
-            escaped_word = re.escape(word)
-            # Add word boundaries that work with case-insensitive matching
-            pattern_parts.append(f"(?<![a-zA-Z]){escaped_word}(?![a-zA-Z])")
-        self.pattern = re.compile("|".join(pattern_parts), re.IGNORECASE)
+        if words_to_mask:
+            pattern_parts = []
+            for word in words_to_mask:
+                escaped_word = re.escape(word)
+                pattern_parts.append(f"(?<![a-zA-Z]){escaped_word}(?![a-zA-Z])")
+            self.pattern = re.compile("|".join(pattern_parts), re.IGNORECASE)
+        else:
+            self.pattern = None  # No pattern if no words
 
     async def check(self, content: str) -> GuardrailResult:
         if not content:
+            logger.debug(
+                "Empty content for guardrail check.",
+                extra={"guardrail": self.name}
+            )
             return GuardrailResult(True, "Empty content")
-
+        if not self.pattern:
+            return GuardrailResult(True, "No masked words found")
         masked_content = self.pattern.sub(self.replacement, content)
         if masked_content != content:
+            logger.info(
+                "WordMaskGuardrail triggered.",
+                extra={"guardrail": self.name, "triggered": True}
+            )
             return GuardrailResult(
                 False, f"Found masked words in content", masked_content
             )
@@ -71,27 +80,39 @@ class ResponseBlockGuardrail(BaseGuardrail):
         super().__init__(name)
         self.blocked_words = blocked_words
         self.standardized_response = standardized_response
-        # Create pattern for blocked words with word boundaries
-        pattern_parts = []
-        for word in blocked_words:
-            # Escape special regex characters in the word
-            escaped_word = re.escape(word)
-            # Add word boundaries that work with case-insensitive matching
-            # This will match the word as a whole word or as part of another word
-            pattern_parts.append(f"\\b{escaped_word}\\b|{escaped_word}")
-        self.pattern = re.compile("|".join(pattern_parts), re.IGNORECASE)
+        if blocked_words:
+            pattern_parts = []
+            for word in blocked_words:
+                escaped_word = re.escape(word)
+                pattern_parts.append(f"\\b{escaped_word}\\b|{escaped_word}")
+            self.pattern = re.compile("|".join(pattern_parts), re.IGNORECASE)
+        else:
+            self.pattern = None  # No pattern if no blocked words
 
     async def check(self, content: str) -> GuardrailResult:
         if not content:
+            logger.debug(
+                "Empty content for guardrail check.",
+                extra={"guardrail": self.name}
+            )
             return GuardrailResult(True, "Empty content")
-
+        if not self.pattern:
+            return GuardrailResult(True, "No blocked words found in response")
         # Check if any blocked words are present
         if self.pattern.search(content):
+            logger.info(
+                "ResponseBlockGuardrail triggered.",
+                extra={"guardrail": self.name, "triggered": True}
+            )
             return GuardrailResult(
                 False,
                 f"Response contains blocked words/phrases",
                 self.standardized_response,
             )
+        logger.debug(
+            "No blocked words found in response.",
+            extra={"guardrail": self.name, "content": content}
+        )
         return GuardrailResult(True, "No blocked words found in response")
 
 
@@ -110,6 +131,10 @@ class PIIGuardrail(BaseGuardrail):
 
     async def check(self, content: str) -> GuardrailResult:
         if not content:
+            logger.debug(
+                "Empty content for guardrail check.",
+                extra={"guardrail": self.name}
+            )
             return GuardrailResult(True, "Empty content")
 
         masked_content = content
@@ -122,6 +147,10 @@ class PIIGuardrail(BaseGuardrail):
                 masked_content = masked_content.replace(match.group(), "[REDACTED]")
 
         if found_pii:
+            logger.info(
+                "PIIGuardrail triggered.",
+                extra={"guardrail": self.name, "triggered": True, "pii_types": list(set(found_pii))}
+            )
             return GuardrailResult(
                 False, f"Found PII: {', '.join(set(found_pii))}", masked_content
             )
@@ -135,13 +164,17 @@ class InjectionGuardrail(BaseGuardrail):
         super().__init__(name)
         self.patterns = {
             "xss": r"<script.*?>.*?</script>|<.*?javascript:.*?>|<.*?\\s+on.*?=.*?>",
-            "sql": r'\b(SELECT|INSERT|UPDATE|DELETE|DROP|UNION|ALTER|EXEC|DECLARE)\b.*?[\'"]',
-            "shell": r"[;&|`\$]|\b(cat|chmod|curl|wget|bash|sh|python|perl|ruby)\b",
-            "path_traversal": r"\.\.\/|\.\.\\",
+            "sql": r'\b(SELECT|INSERT|UPDATE|DELETE|DROP|UNION|ALTER|EXEC|DECLARE)\b.*?[\'\"]',
+            "shell": r"\\b(cat|chmod|curl|wget|bash|sh|python|perl|ruby)\\b",
+            "path_traversal": r"\\.\\./|\\.\\.\\\\",
         }
 
     async def check(self, content: str) -> GuardrailResult:
         if not content:
+            logger.debug(
+                "Empty content for guardrail check.",
+                extra={"guardrail": self.name}
+            )
             return GuardrailResult(True, "Empty content")
 
         found_injections = []
@@ -151,6 +184,10 @@ class InjectionGuardrail(BaseGuardrail):
                 found_injections.append(injection_type)
 
         if found_injections:
+            # logger.info(
+            #     "InjectionGuardrail triggered.",
+            #     extra={"guardrail": self.name, "triggered": True, "injection_types": list(set(found_injections))}
+            # )
             return GuardrailResult(
                 False,
                 f"Potential injection detected: {', '.join(found_injections)}",
@@ -170,7 +207,6 @@ class GuardrailManager:
         self.guardrails.append(guardrail)
 
     async def check_all(self, content: str) -> List[GuardrailResult]:
-        """Run all guardrails against the content."""
         if not content:
             return [GuardrailResult(True, "Empty content")]
 
