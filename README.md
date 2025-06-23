@@ -1,12 +1,14 @@
+![mcpconn logo](res/images/logo.png)
+
+# mcpconn: The Missing Connector for AI
+
 # 📺 Demo Video
 
 [![Watch the demo](https://img.youtube.com/vi/Xzni71r0A_M/hqdefault.jpg)](https://www.youtube.com/watch?v=Xzni71r0A_M)
 
 ---
 
-![mcpconn logo](res/images/logo.png)
-
-# mcpconn: The Missing Connector for AI
+# ✨ Features
 
 **mcpconn** is a Python library that provides a simple and efficient way to connect your applications to AI models using the Model Context Protocol (MCP). It acts as a wrapper around the `mcp` library, offering a streamlined client interface for seamless integration with various AI providers and transport protocols.
 
@@ -33,16 +35,6 @@
   - [🛡️ Security](#️-security)
   - [🌟 Showcase](#-showcase)
   - [💬 Support](#-support)
-
-## ✨ Features
-
-- **Simplified Client Interface**: A high-level `MCPClient` for easy interaction with MCP servers.
-- **Multi-provider Support**: Out-of-the-box support for Anthropic and OpenAI models. **Note:** OpenAI only supports remote MCP endpoints (not local/stdio/localhost). See: https://platform.openai.com/docs/guides/tools-remote-mcp
-- **Flexible Transports**: Connect to servers using STDIO, SSE, or Streamable HTTP. **OpenAI only supports remote MCP endpoints.**
-- **Built-in Guardrails**: Protect your application with content filtering, PII masking, and injection detection.
-- **Conversation Management**: Easily manage conversation history, context, and persistence.
-- **Asynchronous by Design**: Built with `asyncio` for high-performance, non-blocking I/O.
-- **Extensible**: Easily add new LLM providers, transports, or guardrails.
 
 ## 🚀 Getting Started
 
