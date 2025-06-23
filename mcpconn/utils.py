@@ -61,12 +61,12 @@ def setup_logging(level: int = None, json_format: bool = True):
     """
     Set up structured logging for the mcpconn package.
     Args:
-        level (int): Logging level (default: logging.INFO)
+        level (int): Logging level (default: logging.WARNING). Set LOGLEVEL env var or call setup_logging(level=logging.INFO) to enable more verbose logs.
         json_format (bool): Use JSON formatter if True, else key-value pairs.
     """
     import logging
     import sys
-    level = level or int(os.environ.get("LOGLEVEL", logging.INFO))
+    level = level or int(os.environ.get("LOGLEVEL", logging.WARNING))
     root_logger = logging.getLogger()
     root_logger.setLevel(level)
     handler = logging.StreamHandler(sys.stdout)

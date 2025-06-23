@@ -23,7 +23,7 @@ async def main():
     client.add_guardrail(PIIGuardrail(name="pii_detector"))
     client.add_guardrail(WordMaskGuardrail(name="word_mask", words_to_mask=["secret"], replacement="[CENSORED]"))
 
-    await client.connect("your_server_here", transport="stdio")
+    await client.connect("examples/simple_server/weather_stdio.py", transport="stdio") # add your stdio server
 
     user_input = "what is the weather alert in texas."
     # Send to LLM (no guardrails applied automatically)

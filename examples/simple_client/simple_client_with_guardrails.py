@@ -15,10 +15,6 @@ import os
 
 
 
-
-
-
-
 from mcpconn import MCPClient
 from mcpconn.guardrails import (
     WordMaskGuardrail,
@@ -73,13 +69,7 @@ async def main():
         word_guardrail = WordMaskGuardrail(
             name="sensitive_words",
             words_to_mask=[
-                "Texas",
-                "California",
-                "Flood",
-                "password",
-                "secret",
-                "confidential",
-                "private",
+           
             ],
             replacement="[REDACTED]",
         )
@@ -100,12 +90,7 @@ async def main():
         response_block_guardrail = ResponseBlockGuardrail(
             name="response_blocking",
             blocked_words=[
-                "fire",
-                "hack",
-                "exploit",
-                "vulnerability",
-                "attack",
-                "malware",
+             "Trinity River"
             ],
             standardized_response="I apologize, but I cannot provide information about that topic for security reasons.",
         )
