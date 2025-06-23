@@ -19,7 +19,7 @@ from mcpconn import MCPClient
 from mcpconn.guardrails import PIIGuardrail, WordMaskGuardrail
 
 async def main():
-    client = MCPClient(llm_provider="anthropic")
+    client = MCPClient(llm_provider="anthropic",model="claude-3-5-sonnet-20241022")
     client.add_guardrail(PIIGuardrail(name="pii_detector"))
     client.add_guardrail(WordMaskGuardrail(name="word_mask", words_to_mask=["secret"], replacement="[CENSORED]"))
 
