@@ -13,8 +13,6 @@ import os
 # # Add parent directory to path to import mcpconn # Only for dev
 # sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 
-
-
 from mcpconn import MCPClient
 from mcpconn.guardrails import (
     WordMaskGuardrail,
