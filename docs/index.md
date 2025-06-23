@@ -7,6 +7,8 @@
 [![PyPI version](https://badge.fury.io/py/mcpconn.svg)](https://badge.fury.io/py/mcpconn)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+Ready to dive in? Check out the [Getting Started](getting-started.md) guide.
+
 # 📺 Demo Video
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Xzni71r0A_M?si=V2AJ5cqL8_dWE6Vs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -21,6 +23,4 @@
 - **Built-in Guardrails**: Protect your application with content filtering, PII masking, and injection detection.
 - **Conversation Management**: Easily manage conversation history, context, and persistence.
 - **Asynchronous by Design**: Built with `asyncio` for high-performance, non-blocking I/O.
-- **Extensible**: Easily add new LLM providers, transports, or guardrails.
-
-Ready to dive in? Check out the [Getting Started](getting-started.md) guide. 
+- **Extensible**: Easily add new LLM providers, transports, or guardrails. 
