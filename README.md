@@ -1,3 +1,5 @@
+[![Watch the demo](https://img.youtube.com/vi/Xzni71r0A_M/hqdefault.jpg)](https://www.youtube.com/watch?v=Xzni71r0A_M)
+
 ![mcpconn logo](res/images/logo.png)
 
 # mcpconn: The Missing Connector for AI
@@ -5,6 +7,7 @@
 **mcpconn** is a Python library that provides a simple and efficient way to connect your applications to AI models using the Model Context Protocol (MCP). It acts as a wrapper around the `mcp` library, offering a streamlined client interface for seamless integration with various AI providers and transport protocols.
 
 [![PyPI version](https://badge.fury.io/py/mcpconn.svg)](https://badge.fury.io/py/mcpconn)
+[![PyPI](https://img.shields.io/pypi/v/mcpconn.svg)](https://pypi.org/project/mcpconn/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Documentation](https://img.shields.io/badge/Documentation-blue.svg)](https://2796gaurav.github.io/mcpconn)
 [![Tests](https://github.com/2796gaurav/mcpconn/workflows/Python%20Tests/badge.svg)](https://github.com/2796gaurav/mcpconn/actions)
@@ -109,6 +112,11 @@ You can try `mcpconn` directly in your browser using our interactive [Google Col
 ## 📚 Documentation
 
 For full details on all features and the complete API reference, please visit our **[documentation site](https://2796gaurav.github.io/mcpconn)**.
+
+## 📖 Learn More
+
+- [Medium Article: mcpconn – The Universal AI Model Connector for Python Applications](https://medium.com/@gauravc2708/mcpconn-the-universal-ai-model-connector-for-python-applications-02feeaac2ce2)
+- [PyPI: mcpconn package and pip install info](https://pypi.org/project/mcpconn/)
 
 ## 🗺️ Roadmap
 
